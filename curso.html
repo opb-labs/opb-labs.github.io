@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>De cero a Orderflow · Plan de formación</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<meta name="description" content="Curso gratuito para aprender trading de futuros del Nasdaq y S&P 500 desde cero hasta orderflow, con animaciones interactivas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B0B0C;--panel:#131417;--panel2:#1a1c20;--line:#26292f;--acc:#1496BE;--w:#F2F2F2;--t2:#BEC2C8;--t3:#787C82;--g:#4CD964;--r:#FF5252;--y:#FFE14D}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--w);font-family:Montserrat,system-ui,sans-serif;font-weight:500;line-height:1.6;font-size:16px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.topbar{height:8px;background:var(--acc)}
+header.hero{padding:44px 0 26px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--t2);font-size:12px;letter-spacing:.22em;font-weight:600}
+.brand b{color:var(--acc)}
+h1{font-weight:800;font-size:clamp(30px,5.4vw,52px);line-height:1.08;margin:18px 0 10px;letter-spacing:-.01em}
+h1 span{color:var(--acc)}
+.lead{color:var(--t2);font-size:18px;max-width:760px;margin:0}
+h2{font-weight:800;font-size:clamp(22px,3vw,30px);margin:0;line-height:1.2}
+h3{font-weight:700;font-size:18px;margin:22px 0 8px}
+p{margin:8px 0}
+.t2{color:var(--t2)} .t3{color:var(--t3)} .acc{color:var(--acc)} .gr{color:var(--g)} .rd{color:var(--r)} .yl{color:var(--y)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+/* roadmap */
+.roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:28px 0 12px}
+.chip{display:block;text-decoration:none;color:var(--w);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;transition:.2s;position:relative;overflow:hidden}
+.chip:hover{border-color:var(--acc);transform:translateY(-2px)}
+.chip small{display:block;color:var(--acc);font-weight:700;font-size:11px;letter-spacing:.14em}
+.chip strong{display:block;font-size:14px;line-height:1.3;margin-top:3px}
+.chip .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--g);width:0;transition:.4s}
+.blocks{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 0}
+.block{font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid var(--line);color:var(--t2)}
+.progress{display:flex;align-items:center;gap:14px;margin:18px 0 0;color:var(--t2);font-size:14px}
+.progress .track{flex:1;height:8px;background:var(--panel2);border-radius:99px;overflow:hidden}
+.progress .fill{height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--g));transition:.5s}
+/* phases */
+.phase{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;margin:30px 0;scroll-margin-top:16px}
+.phase-head{display:flex;gap:16px;align-items:flex-start}
+.num{flex:none;width:52px;height:52px;border-radius:50%;background:var(--acc);display:grid;place-items:center;font-weight:800;font-size:20px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:12px;font-weight:600;color:var(--t2);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:3px 9px}
+.goal{border-left:3px solid var(--acc);background:rgba(20,150,190,.08);padding:10px 14px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--t2)}
+.goal b{color:var(--w)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}.phase{padding:20px}}
+ul.list{padding-left:20px;margin:6px 0} ul.list li{margin:5px 0;color:var(--t2)} ul.list li b{color:var(--w)}
+.demo{background:#0f1012;border:1px solid var(--line);border-radius:12px;padding:16px;margin:20px 0}
+.demo-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;letter-spacing:.06em;color:var(--acc);text-transform:uppercase;margin-bottom:10px}
+.demo-title:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 0 0 rgba(76,217,100,.6);animation:pulse 1.6s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(76,217,100,0)}100%{box-shadow:0 0 0 0 rgba(76,217,100,0)}}
+canvas{width:100%;display:block;border-radius:8px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 4px}
+button,select,input{font-family:inherit}
+.btn{background:var(--panel2);color:var(--w);border:1px solid var(--line);border-radius:8px;padding:8px 13px;font-weight:600;font-size:13px;cursor:pointer;transition:.15s}
+.btn:hover{border-color:var(--acc)}
+.btn.on{background:var(--acc);border-color:var(--acc)}
+.btn.buy{border-color:rgba(76,217,100,.5);color:var(--g)} .btn.buy:hover{background:rgba(76,217,100,.12)}
+.btn.sell{border-color:rgba(255,82,82,.5);color:var(--r)} .btn.sell:hover{background:rgba(255,82,82,.12)}
+.field{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--t3);font-weight:600}
+.field input,.field select{background:var(--panel2);color:var(--w);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;width:150px}
+input[type=range]{accent-color:var(--acc);width:240px}
+.explain{color:var(--t2);font-size:14px;min-height:22px;margin-top:8px}
+.explain b{color:var(--w)}
+.result{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:12px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat small{display:block;color:var(--t3);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.stat span{font-size:20px;font-weight:800}
+table.tb{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+table.tb th{text-align:left;color:var(--t3);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:8px;border-bottom:1px solid var(--line)}
+table.tb td{padding:8px;border-bottom:1px solid var(--line);color:var(--t2)}
+table.tb td b{color:var(--w)}
+.check{list-style:none;padding:0;margin:8px 0}
+.check li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;color:var(--t2);font-size:15px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--g);margin-top:3px;flex:none;cursor:pointer}
+.check li.done{color:var(--t3);text-decoration:line-through}
+.exercise{align-self:start;background:rgba(255,225,77,.06);border:1px dashed rgba(255,225,77,.4);border-radius:10px;padding:12px 14px;margin:16px 0;color:var(--t2);font-size:15px}
+.exercise b{color:var(--y)}
+/* DOM */
+.domwrap{display:grid;grid-template-columns:minmax(300px,1.3fr) 1fr;gap:14px}
+@media(max-width:760px){.domwrap{grid-template-columns:1fr}}
+table.dom{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:13px}
+table.dom th{font-family:Montserrat;font-size:10px;letter-spacing:.1em;color:var(--t3);padding:5px;text-transform:uppercase}
+table.dom td{padding:3px 8px;height:24px;text-align:center;border-bottom:1px solid #1b1d21;position:relative}
+table.dom td.px{color:var(--t2);background:#15171a;width:30%}
+table.dom tr.last td.px{background:var(--acc);color:#fff;font-weight:700}
+table.dom td.bid,table.dom td.ask{width:27%}
+table.dom td.bid .b,table.dom td.ask .b{position:absolute;top:3px;bottom:3px;opacity:.28;border-radius:3px}
+table.dom td.bid .b{right:0;background:var(--g)} table.dom td.ask .b{left:0;background:var(--r)}
+table.dom td span{position:relative}
+table.dom td.vol{color:var(--t3);width:16%;font-size:12px}
+.flash{animation:flash .6s}
+@keyframes flash{0%{background:rgba(255,225,77,.45)}100%{background:transparent}}
+.tns{background:#15171a;border-radius:8px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:12.5px;height:380px;overflow:hidden}
+.tns .row{display:grid;grid-template-columns:1.2fr 1fr .6fr;padding:3px 6px;border-radius:4px;animation:slide .35s}
+.tns .row.b{color:var(--g)} .tns .row.s{color:var(--r)} .tns .row.big{background:rgba(255,225,77,.12);font-weight:700}
+@keyframes slide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.flow{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:16px 0}
+.flow .st{flex:1;min-width:150px;background:var(--panel2);border:1px solid var(--line);padding:12px;border-radius:10px;position:relative;margin:0 14px 10px 0}
+.flow .st:not(:last-child):after{content:"➜";position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--acc);font-size:13px}
+.flow .st small{color:var(--acc);font-weight:700;font-size:11px;letter-spacing:.1em}
+.flow .st b{display:block;font-size:14px}
+.flow .st span{display:block;color:var(--t3);font-size:12.5px;margin-top:4px;line-height:1.4}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--t2);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:26px 0 50px;color:var(--t3);font-size:13px}
+.warn{background:rgba(255,82,82,.07);border:1px solid rgba(255,82,82,.3);border-radius:10px;padding:12px 14px;color:var(--t2);font-size:14px;margin:16px 0}
+.site-nav{position:sticky;top:0;z-index:50;background:rgba(11,11,12,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.site-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+.sn-brand{display:flex;align-items:center;gap:10px;color:var(--w);text-decoration:none;font-weight:800;letter-spacing:.06em}.sn-brand b{color:var(--acc)}
+.sn-links a{color:var(--t2);text-decoration:none;font-weight:600;font-size:14px;margin-left:20px}.sn-links a:hover,.sn-links a.act{color:var(--w)}
+.sn-prog{height:2px;background:transparent}.sn-prog div{height:100%;width:0;background:var(--acc)}
+.next{display:flex;justify-content:flex-end;margin-top:18px}.next a{color:var(--w);text-decoration:none;font-weight:700;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 16px;transition:.2s}.next a:hover{border-color:var(--acc);transform:translateX(3px)}.next a span{color:var(--acc)}
+.phase{scroll-margin-top:72px}
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<nav class="site-nav"><div class="wrap"><a href="index.html" class="sn-brand"><img src="assets/logo.svg" alt="" width="28" height="28">OPB <b>LABS</b></a><div class="sn-links"><a href="index.html">Inicio</a><a href="curso.html" class="act">Curso</a><a href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">YouTube</a></div></div><div class="sn-prog"><div id="snfill"></div></div></nav>
+<div class="wrap">
+
+<header class="hero">
+  <div class="brand">
+    <svg width="34" height="34" viewBox="0 0 100 100"><line x1="50" y1="12" x2="50" y2="88" stroke="#E6E6E6" stroke-width="3" stroke-linecap="round"/><rect x="39.5" y="21" width="9" height="10" rx="1.5" fill="#8C8C8C"/><rect x="51.5" y="21" width="10" height="10" rx="1.5" fill="#F2F2F2"/><rect x="33.5" y="33" width="15" height="10" rx="1.5" fill="#8C8C8C"/><rect x="51.5" y="33" width="19" height="10" rx="1.5" fill="#F2F2F2"/><rect x="28.5" y="45" width="20" height="10" rx="1.5" fill="#1496BE"/><rect x="51.5" y="45" width="25" height="10" rx="1.5" fill="#1496BE"/><rect x="34.5" y="57" width="14" height="10" rx="1.5" fill="#8C8C8C"/><rect x="51.5" y="57" width="18" height="10" rx="1.5" fill="#F2F2F2"/><rect x="40.5" y="69" width="8" height="10" rx="1.5" fill="#8C8C8C"/><rect x="51.5" y="69" width="11" height="10" rx="1.5" fill="#F2F2F2"/></svg>
+    OPB TECH &amp; TRADING <b>LABS</b>
+  </div>
+  <h1>De cero a <span>Orderflow</span><br>en los futuros del Nasdaq y S&amp;P 500</h1>
+  <p class="lead">Un plan en 10 fases para alguien que no sabe nada de finanzas. Cada fase tiene un objetivo claro, un ejemplo animado que puedes tocar, un ejercicio y una lista para saber si estás listo para pasar a la siguiente.</p>
+
+  <div class="blocks" style="margin-top:22px">
+    <span class="block">Bloque A · Entender el mercado (fases 0–2)</span>
+    <span class="block">Bloque B · Leer y protegerse (fases 3–5)</span>
+    <span class="block">Bloque C · Volumen y Orderflow (fases 6–8)</span>
+    <span class="block">Bloque D · Practicar con método (fase 9)</span>
+  </div>
+
+  <nav class="roadmap" id="roadmap"></nav>
+  <div class="progress"><span>Tu progreso</span><div class="track"><div class="fill" id="pfill"></div></div><b id="ptext">0%</b></div>
+</header>
+
+<!-- FASE 0 -->
+<section class="phase" id="fase-0" data-title="Qué es el trading">
+  <div class="phase-head"><div class="num">0</div><div>
+    <h2>Qué es el trading (y qué no es)</h2>
+    <div class="meta"><span class="tag">Semana 1</span><span class="tag">Sin gráficos todavía</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> que la persona entienda en una frase qué hace un trader y tenga expectativas realistas antes de tocar nada.</div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Invertir vs. tradear:</b> invertir es comprar algo para años; tradear es entrar y salir en minutos u horas aprovechando movimientos del precio.</li>
+        <li><b>Se gana en ambas direcciones:</b> puedes comprar (apostar a que sube) o vender primero (apostar a que baja).</li>
+        <li><b>El trader no adivina:</b> busca situaciones que se repiten, arriesga poco cuando se equivoca y deja correr cuando acierta.</li>
+        <li><b>La realidad:</b> la mayoría pierde dinero al empezar. Por eso el plan va lento y se practica en simulado mucho antes que con dinero real.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Una analogía que funciona</h3>
+      <p class="t2">El mercado es un <b class="acc">mercadillo</b>: unos quieren comprar fruta, otros venderla. Si llegan muchos compradores con prisa y hay poca fruta, el precio sube. Si sobra fruta y nadie la quiere, baja. Todo el curso, incluido el orderflow, es aprender a ver <b>quién tiene más prisa</b> en cada momento.</p>
+    </div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="0">
+    <li><input type="checkbox">Sé explicar la diferencia entre invertir y tradear.</li>
+    <li><input type="checkbox">Entiendo que puedo ganar o perder tanto si el precio sube como si baja.</li>
+    <li><input type="checkbox">Acepto que voy a practicar en simulado antes de usar dinero real.</li>
+  </ul>
+</section>
+
+<!-- FASE 1 -->
+<section class="phase" id="fase-1" data-title="El mercado es una subasta">
+  <div class="phase-head"><div class="num">1</div><div>
+    <h2>Cómo se mueve el precio: la subasta</h2>
+    <div class="meta"><span class="tag">Semanas 1–2</span><span class="tag">La idea más importante del curso</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> entender que el precio solo se mueve porque hay un desequilibrio entre compradores y vendedores. Esta es la base de todo el orderflow.</div>
+  <div class="demo">
+    <div class="demo-title">Animación · Compradores contra vendedores</div>
+    <canvas id="cvAuction"></canvas>
+    <div class="controls">
+      <span class="field" style="flex-direction:row;align-items:center;gap:10px">Más vendedores <input type="range" id="slPressure" min="0" max="100" value="50"> Más compradores</span>
+    </div>
+    <div class="explain" id="msgAuction"></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Precio:</b> el último acuerdo entre un comprador y un vendedor.</li>
+        <li><b>Oferta y demanda:</b> si hay más prisa por comprar que por vender, sube; al revés, baja.</li>
+        <li><b>Tendencia y rango:</b> cuando un lado domina, hay tendencia; cuando están equilibrados, el precio va de lado.</li>
+      </ul>
+    </div>
+    <div class="exercise"><b>Ejercicio:</b> mueve el control al 50 % y obsérvalo un minuto. Luego llévalo al 70 %. Describe con tus palabras qué cambia en el gráfico.</div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="1">
+    <li><input type="checkbox">Puedo explicar por qué sube o baja un precio sin usar palabras técnicas.</li>
+    <li><input type="checkbox">Distingo un mercado en tendencia de uno en rango.</li>
+  </ul>
+</section>
+
+<!-- FASE 2 -->
+<section class="phase" id="fase-2" data-title="Futuros NQ y ES">
+  <div class="phase-head"><div class="num">2</div><div>
+    <h2>Los futuros del Nasdaq (NQ) y del S&amp;P 500 (ES)</h2>
+    <div class="meta"><span class="tag">Semanas 2–3</span><span class="tag">Qué compras exactamente</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> saber qué es un contrato de futuros, cuánto dinero vale cada movimiento y cuándo se opera.</div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Índice:</b> el Nasdaq 100 y el S&amp;P 500 son "cestas" de grandes empresas de EE. UU.</li>
+        <li><b>Futuro:</b> un contrato que sube y baja igual que el índice. No compras acciones: compras exposición al movimiento.</li>
+        <li><b>Tick:</b> el movimiento mínimo (0,25 puntos). Cada tick vale una cantidad fija de dólares.</li>
+        <li><b>Apalancamiento:</b> con poco dinero de garantía (margen) mueves mucho dinero. Multiplica ganancias y pérdidas.</li>
+        <li><b>Micros (MNQ, MES):</b> la décima parte del contrato grande. Es por donde empieza todo el mundo.</li>
+        <li><b>Horario:</b> se negocia casi 24 h de domingo a viernes, pero la sesión principal es de 9:30 a 16:00 de Nueva York (normalmente de 15:30 a 22:00 en España).</li>
+        <li><b>Vencimientos:</b> los contratos vencen cada trimestre (marzo, junio, septiembre, diciembre) y hay que pasarse al siguiente ("rollover").</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Los 4 contratos del curso</h3>
+      <table class="tb">
+        <tr><th>Contrato</th><th>1 punto</th><th>1 tick (0,25)</th></tr>
+        <tr><td><b>ES</b> · S&amp;P 500</td><td>50 $</td><td>12,50 $</td></tr>
+        <tr><td><b>MES</b> · Micro S&amp;P</td><td>5 $</td><td>1,25 $</td></tr>
+        <tr><td><b>NQ</b> · Nasdaq 100</td><td>20 $</td><td>5,00 $</td></tr>
+        <tr><td><b>MNQ</b> · Micro Nasdaq</td><td>2 $</td><td>0,50 $</td></tr>
+      </table>
+      <p class="t3" style="font-size:13px">El NQ se mueve muchos más puntos al día que el ES, así que es más rápido y nervioso. Para aprender orderflow, el ES suele ser más "legible".</p>
+    </div>
+  </div>
+  <div class="demo">
+    <div class="demo-title">Calculadora · ¿Cuánto gano o pierdo?</div>
+    <div class="controls">
+      <label class="field">Contrato<select id="ccC"><option value="50">ES</option><option value="5">MES</option><option value="20">NQ</option><option value="2" selected>MNQ</option></select></label>
+      <label class="field">Puntos que se mueve<input id="ccP" type="number" value="10" step="0.25"></label>
+      <label class="field">Nº de contratos<input id="ccN" type="number" value="1" min="1"></label>
+    </div>
+    <div class="result">
+      <div class="stat"><small>Ticks</small><span id="ccT">40</span></div>
+      <div class="stat"><small>Resultado</small><span id="ccR" class="gr">20 $</span></div>
+    </div>
+    <div class="explain" id="ccMsg"></div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="2">
+    <li><input type="checkbox">Sé cuánto vale un punto y un tick en ES, MES, NQ y MNQ.</li>
+    <li><input type="checkbox">Entiendo qué es el apalancamiento y por qué es peligroso.</li>
+    <li><input type="checkbox">Sé en qué horario hay más movimiento y qué es el rollover.</li>
+  </ul>
+</section>
+
+<!-- FASE 3 -->
+<section class="phase" id="fase-3" data-title="Leer un gráfico">
+  <div class="phase-head"><div class="num">3</div><div>
+    <h2>Leer un gráfico: velas, soportes y resistencias</h2>
+    <div class="meta"><span class="tag">Semanas 3–4</span><span class="tag">Lo justo, sin indicadores</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> leer una vela, ver la estructura (máximos y mínimos) y marcar las zonas donde el precio ya reaccionó antes.</div>
+  <div class="demo">
+    <div class="demo-title">Animación · Cómo nace una vela</div>
+    <canvas id="cvCandle"></canvas>
+    <div class="legend"><span><i style="background:#1496BE"></i>Recorrido real del precio</span><span><i style="background:#4CD964"></i>Vela alcista (cierra arriba)</span><span><i style="background:#FF5252"></i>Vela bajista (cierra abajo)</span></div>
+    <div class="explain">Izquierda: todo lo que hizo el precio durante el periodo. Derecha: cómo se resume en una vela con solo 4 datos (apertura, máximo, mínimo y cierre). <b>La vela esconde lo que pasó dentro</b>; el orderflow sirve justamente para verlo.</div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>La vela:</b> apertura, máximo, mínimo, cierre. Cuerpo y mechas.</li>
+        <li><b>Temporalidades:</b> velas de 1, 5, 15 minutos… y gráficos por rango o volumen.</li>
+        <li><b>Estructura:</b> máximos y mínimos crecientes (tendencia alcista), decrecientes (bajista) o iguales (rango).</li>
+        <li><b>Niveles clave:</b> máximo y mínimo del día anterior, apertura del día, cierre de ayer.</li>
+        <li><b>Soportes y resistencias:</b> zonas donde antes hubo compradores o vendedores fuertes.</li>
+      </ul>
+    </div>
+    <div class="exercise"><b>Ejercicio:</b> abre un gráfico de 5 minutos del ES. Marca a mano el máximo y el mínimo de ayer y la apertura de hoy. Durante 5 días, anota qué hizo el precio al tocar cada nivel: ¿rebotó o lo atravesó?</div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="3">
+    <li><input type="checkbox">Leo cualquier vela y sé lo que significa.</li>
+    <li><input type="checkbox">Identifico si el mercado está en tendencia o en rango.</li>
+    <li><input type="checkbox">Marco los niveles clave del día sin ayuda.</li>
+  </ul>
+</section>
+
+<!-- FASE 4 -->
+<section class="phase" id="fase-4" data-title="Riesgo y psicología">
+  <div class="phase-head"><div class="num">4</div><div>
+    <h2>Gestión del riesgo y psicología</h2>
+    <div class="meta"><span class="tag">Semanas 4–5</span><span class="tag">Antes del orderflow, no después</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> que nadie opere sin saber cuánto puede perder en cada operación. Esta fase va antes del orderflow a propósito: es la que mantiene vivo al alumno.</div>
+  <div class="demo">
+    <div class="demo-title">Calculadora · ¿Cuántos contratos puedo usar?</div>
+    <div class="controls">
+      <label class="field">Capital ($)<input id="rkCap" type="number" value="5000"></label>
+      <label class="field">Riesgo por operación (%)<input id="rkPct" type="number" value="1" step="0.25"></label>
+      <label class="field">Stop (puntos)<input id="rkStop" type="number" value="8" step="0.25"></label>
+      <label class="field">Contrato<select id="rkC"><option value="50">ES</option><option value="5">MES</option><option value="20">NQ</option><option value="2" selected>MNQ</option></select></label>
+    </div>
+    <div class="result">
+      <div class="stat"><small>Riesgo máximo</small><span id="rkMax"></span></div>
+      <div class="stat"><small>Riesgo por contrato</small><span id="rkPer"></span></div>
+      <div class="stat"><small>Contratos</small><span id="rkN"></span></div>
+    </div>
+    <div class="explain" id="rkMsg"></div>
+    <h3 style="font-size:15px;margin-top:22px">Ratio beneficio/riesgo y % de aciertos necesario</h3>
+    <div class="controls"><span class="field" style="flex-direction:row;align-items:center;gap:10px">Ganas <input type="range" id="rrS" min="0.5" max="4" step="0.25" value="2"> <b id="rrV" class="mono" style="color:#F2F2F2">2</b> veces lo que arriesgas</span></div>
+    <canvas id="cvRR"></canvas>
+    <div class="explain" id="rrMsg"></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Stop loss siempre:</b> se decide antes de entrar, nunca durante.</li>
+        <li><b>Regla del 1 %:</b> no arriesgar más de un 0,5–1 % de la cuenta por operación.</li>
+        <li><b>Límite diario:</b> si pierdes X en el día (por ejemplo, 2 operaciones), se cierra la plataforma.</li>
+        <li><b>Esperanza matemática:</b> no hace falta acertar mucho si ganas más de lo que pierdes.</li>
+        <li><b>Psicología:</b> miedo, avaricia, venganza tras una pérdida, sobreoperar. Cómo detectarlo.</li>
+        <li><b>Diario de trading:</b> anotar cada operación con captura, motivo y emoción.</li>
+      </ul>
+    </div>
+    <div class="exercise"><b>Ejercicio:</b> escribe en un papel tus 3 reglas innegociables (riesgo por operación, pérdida máxima diaria y nº máximo de operaciones al día). Pégalo junto a la pantalla.</div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="4">
+    <li><input type="checkbox">Sé calcular el tamaño de posición para cualquier stop.</li>
+    <li><input type="checkbox">Tengo por escrito mi límite de pérdida diaria.</li>
+    <li><input type="checkbox">Tengo un diario de trading preparado.</li>
+  </ul>
+</section>
+
+<!-- FASE 5 -->
+<section class="phase" id="fase-5" data-title="Herramientas">
+  <div class="phase-head"><div class="num">5</div><div>
+    <h2>Herramientas: plataforma, datos y simulador</h2>
+    <div class="meta"><span class="tag">Semanas 5–6</span><span class="tag">Montar el puesto de trabajo</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> tener una plataforma funcionando en cuenta de simulación, con datos reales, y saber lanzar y cancelar órdenes sin errores.</div>
+  <div class="flow">
+    <div class="st"><small>1 · BRÓKER</small><b>Cuenta de futuros</b><span>Primero en demo. Comisiones y márgenes según el bróker.</span></div>
+    <div class="st"><small>2 · DATOS</small><b>Feed de mercado</b><span>Rithmic o CQG, con datos de profundidad (no solo precio).</span></div>
+    <div class="st"><small>3 · PLATAFORMA</small><b>Gráficos y DOM</b><span>NinjaTrader 8, Sierra Chart, ATAS, Quantower…</span></div>
+    <div class="st"><small>4 · ORDERFLOW</small><b>Herramientas</b><span>Footprint, DOM, perfil de volumen, CVD, mapa de calor (Bookmap).</span></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Tipos de orden:</b> a mercado (entro ya), límite (espero a mi precio), stop (salgo si llega aquí).</li>
+        <li><b>Órdenes OCO/bracket:</b> entrada con stop y objetivo puestos a la vez.</li>
+        <li><b>Simulador y replay:</b> repetir días pasados a cámara rápida para practicar.</li>
+        <li><b>Atajos y errores comunes:</b> doble clic, cantidad equivocada, olvidar el stop.</li>
+      </ul>
+    </div>
+    <div class="exercise"><b>Ejercicio:</b> en simulado, haz 20 operaciones "tontas" solo para practicar la mecánica: entrar a mercado, entrar con límite, mover el stop y cerrar. El objetivo es cero errores, no ganar.</div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="5">
+    <li><input type="checkbox">Tengo una plataforma en simulado con datos de profundidad.</li>
+    <li><input type="checkbox">Sé lanzar órdenes a mercado, límite y con stop sin equivocarme.</li>
+    <li><input type="checkbox">Sé usar el modo replay para repasar días pasados.</li>
+  </ul>
+</section>
+
+<!-- FASE 6 -->
+<section class="phase" id="fase-6" data-title="Volumen y perfil">
+  <div class="phase-head"><div class="num">6</div><div>
+    <h2>Volumen y perfil de volumen</h2>
+    <div class="meta"><span class="tag">Semanas 6–8</span><span class="tag">El puente hacia el orderflow</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> ver <b>dónde</b> se ha negociado más, no solo cuándo. Las zonas de mucho volumen actúan como imanes y las de poco volumen, como huecos que el precio cruza rápido.</div>
+  <div class="demo">
+    <div class="demo-title">Animación · Cómo se construye un perfil de volumen</div>
+    <canvas id="cvProfile"></canvas>
+    <div class="controls"><button class="btn" id="pfReset">↻ Volver a empezar</button></div>
+    <div class="legend"><span><i style="background:#FFE14D"></i>POC: el precio con más volumen</span><span><i style="background:#1496BE"></i>Área de valor (70 % del volumen)</span><span><i style="background:#3a3d44"></i>Fuera del área de valor</span></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Volumen:</b> cuántos contratos se negociaron.</li>
+        <li><b>Perfil de volumen:</b> el volumen puesto "de lado", por precio.</li>
+        <li><b>POC, VAH, VAL:</b> precio de más volumen, y techo y suelo del área de valor.</li>
+        <li><b>Nodos altos y bajos (HVN/LVN):</b> zonas de aceptación y de rechazo.</li>
+        <li><b>VWAP:</b> el precio medio ponderado por volumen del día.</li>
+      </ul>
+    </div>
+    <div class="exercise"><b>Ejercicio:</b> cada día, antes de la apertura, marca el POC, VAH y VAL de la sesión anterior. Anota si hoy el precio abre dentro o fuera del área de valor y qué pasa en la primera hora.</div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="6">
+    <li><input type="checkbox">Sé qué es el POC y el área de valor y por qué importan.</li>
+    <li><input type="checkbox">Marco los niveles del perfil del día anterior en menos de 2 minutos.</li>
+  </ul>
+</section>
+
+<!-- FASE 7 -->
+<section class="phase" id="fase-7" data-title="Orderflow I · DOM">
+  <div class="phase-head"><div class="num">7</div><div>
+    <h2>Orderflow I: el libro de órdenes (DOM) y Time &amp; Sales</h2>
+    <div class="meta"><span class="tag">Semanas 8–10</span><span class="tag">Ver la subasta en directo</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> entender la diferencia entre órdenes que <b>esperan</b> (límite, liquidez) y órdenes que <b>atacan</b> (a mercado, agresión), y ver cómo eso mueve el precio tick a tick.</div>
+  <div class="demo">
+    <div class="demo-title">Simulador · Mueve tú el precio</div>
+    <div class="domwrap">
+      <div>
+        <table class="dom" id="domTable"></table>
+      </div>
+      <div>
+        <div class="t3" style="font-size:11px;font-weight:700;letter-spacing:.1em;margin-bottom:6px">TIME &amp; SALES (CINTA)</div>
+        <div class="tns" id="tns"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <label class="field">Tamaño<select id="domQ"><option>5</option><option selected>25</option><option>80</option></select></label>
+      <button class="btn buy" id="mBuy">Comprar a mercado</button>
+      <button class="btn sell" id="mSell">Vender a mercado</button>
+      <button class="btn" id="lBuy">+ Límite compra</button>
+      <button class="btn" id="lSell">+ Límite venta</button>
+      <button class="btn" id="domAuto">▶ Mercado automático</button>
+    </div>
+    <div class="explain" id="domMsg">Pulsa <b>Comprar a mercado</b> con tamaño 80 y mira qué pasa con los vendedores que esperaban arriba.</div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Bid y Ask:</b> el mejor precio al que alguien compra y al que alguien vende.</li>
+        <li><b>Liquidez pasiva:</b> órdenes límite que esperan en el libro (columnas Bid/Ask).</li>
+        <li><b>Agresión:</b> órdenes a mercado que "se comen" esa liquidez. Son las que mueven el precio.</li>
+        <li><b>Time &amp; Sales:</b> la lista de cada operación ejecutada, en verde si fue una compra agresiva y en rojo si fue una venta.</li>
+        <li><b>Órdenes grandes, spoofing y recargas (icebergs):</b> lo que se ve en el libro puede desaparecer.</li>
+        <li><b>Mapa de calor (Bookmap):</b> el historial del libro dibujado como imagen.</li>
+      </ul>
+    </div>
+    <div class="exercise"><b>Ejercicio:</b> en replay, mira solo el DOM y la cinta durante los primeros 15 minutos de la sesión de EE. UU. Sin gráfico. Cada vez que el precio rompa un nivel, anota si fue por muchas compras agresivas o porque desapareció la liquidez.</div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="7">
+    <li><input type="checkbox">Distingo liquidez pasiva (límite) de agresión (mercado).</li>
+    <li><input type="checkbox">Sé explicar por qué el precio sube un tick.</li>
+    <li><input type="checkbox">Leo la cinta y detecto cuándo entran operaciones grandes.</li>
+  </ul>
+</section>
+
+<!-- FASE 8 -->
+<section class="phase" id="fase-8" data-title="Orderflow II · Footprint">
+  <div class="phase-head"><div class="num">8</div><div>
+    <h2>Orderflow II: footprint, delta y CVD</h2>
+    <div class="meta"><span class="tag">Semanas 10–13</span><span class="tag">Ver dentro de la vela</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> abrir la vela y ver cuántas compras y ventas agresivas hubo en cada precio. Detectar desequilibrios, absorción y agotamiento.</div>
+  <div class="demo">
+    <div class="demo-title">Animación · Una vela footprint por dentro</div>
+    <canvas id="cvFoot"></canvas>
+    <div class="controls">
+      <button class="btn on" data-fs="compra">Compradores agresivos</button>
+      <button class="btn" data-fs="venta">Vendedores agresivos</button>
+      <button class="btn" data-fs="absorcion">Absorción en el mínimo</button>
+    </div>
+    <div class="legend"><span><span class="rd mono">Izq.</span> ventas agresivas (en el bid)</span><span><span class="gr mono">Der.</span> compras agresivas (en el ask)</span><span><i style="border:2px solid #4CD964;background:transparent"></i>Desequilibrio comprador ≥ 3×</span><span><i style="border:2px solid #FF5252;background:transparent"></i>Desequilibrio vendedor ≥ 3×</span><span><i style="border:2px solid #FFE14D;background:transparent"></i>POC de la vela</span></div>
+    <div class="explain" id="fpMsg"></div>
+  </div>
+  <div class="demo">
+    <div class="demo-title">Animación · Precio vs. delta acumulado (CVD)</div>
+    <canvas id="cvCVD"></canvas>
+    <div class="controls">
+      <button class="btn on" data-cs="confirma">Confirmación</button>
+      <button class="btn" data-cs="divergencia">Divergencia</button>
+      <button class="btn" data-cs="absorcion">Absorción</button>
+    </div>
+    <div class="explain" id="cvdMsg"></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Footprint:</b> por cada precio de la vela, ventas agresivas × compras agresivas.</li>
+        <li><b>Delta:</b> compras agresivas menos ventas agresivas. Positivo = dominan compradores.</li>
+        <li><b>CVD:</b> la suma del delta a lo largo del día. Dice quién está empujando.</li>
+        <li><b>Desequilibrios (imbalances):</b> un lado ataca 3 veces más que el otro.</li>
+        <li><b>Absorción:</b> muchos atacan, pero el precio no avanza: alguien grande está parando el golpe.</li>
+        <li><b>Agotamiento:</b> el precio llega a un extremo con cada vez menos volumen.</li>
+        <li><b>Divergencia de delta:</b> el precio hace un nuevo máximo pero el CVD no lo acompaña.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="exercise"><b>Ejercicio:</b> en replay, busca 10 ejemplos de absorción y 10 de desequilibrios apilados (3 o más seguidos) en niveles clave de la fase 3 y 6. Haz captura de cada uno y anota qué hizo el precio después.</div>
+      <div class="warn"><b>Regla de oro:</b> el orderflow se lee <b>en los niveles</b>. Una absorción en mitad de la nada no significa casi nada; en el VAL del día anterior o en el mínimo de ayer, sí.</div>
+    </div>
+  </div>
+  <h3>Checklist para pasar de fase</h3>
+  <ul class="check" data-phase="8">
+    <li><input type="checkbox">Leo una vela footprint: delta, POC y desequilibrios.</li>
+    <li><input type="checkbox">Reconozco absorción y agotamiento en replay.</li>
+    <li><input type="checkbox">Detecto divergencias entre precio y CVD.</li>
+  </ul>
+</section>
+
+<!-- FASE 9 -->
+<section class="phase" id="fase-9" data-title="Plan y práctica">
+  <div class="phase-head"><div class="num">9</div><div>
+    <h2>Juntarlo todo: un plan de trading y práctica con método</h2>
+    <div class="meta"><span class="tag">Semana 13 en adelante</span><span class="tag">Simulado → micro → normal</span></div>
+  </div></div>
+  <div class="goal"><b>Objetivo:</b> convertir todo lo aprendido en un proceso que se repite igual cada día, demostrar en simulado que funciona y pasar a real con el tamaño más pequeño.</div>
+  <h3>El proceso de cada operación</h3>
+  <div class="flow">
+    <div class="st"><small>1 · CONTEXTO</small><b>¿Dónde estamos?</b><span>Tendencia o rango, perfil del día anterior, noticias.</span></div>
+    <div class="st"><small>2 · NIVEL</small><b>¿Dónde actuar?</b><span>Solo en niveles marcados antes de la apertura.</span></div>
+    <div class="st"><small>3 · ORDERFLOW</small><b>¿Quién gana?</b><span>Absorción, desequilibrios, delta, CVD en ese nivel.</span></div>
+    <div class="st"><small>4 · GATILLO</small><b>Entrada</b><span>Señal concreta y repetible. Stop detrás del nivel.</span></div>
+    <div class="st"><small>5 · GESTIÓN</small><b>Salida</b><span>Objetivo en el siguiente nivel. Diario al terminar.</span></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Las tres etapas de práctica</h3>
+      <table class="tb">
+        <tr><th>Etapa</th><th>Cuándo pasar a la siguiente</th></tr>
+        <tr><td><b>Simulado</b></td><td>Al menos 2 meses (unas 40 sesiones) siguiendo las reglas y con resultado positivo.</td></tr>
+        <tr><td><b>Real con micros</b></td><td>1 contrato de MES o MNQ. Otros 2–3 meses de constancia antes de subir.</td></tr>
+        <tr><td><b>Contratos normales</b></td><td>Solo si el capital permite respetar la regla del 1 % con el stop habitual.</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Qué se enseña</h3>
+      <ul class="list">
+        <li><b>Escribir 1–2 setups</b> concretos y no salirse de ellos.</li>
+        <li><b>Rutina:</b> preparación antes de la apertura, operativa y revisión.</li>
+        <li><b>Estadísticas:</b> % de acierto, ratio medio, peor racha.</li>
+        <li><b>Revisión semanal</b> del diario para corregir errores repetidos.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="exercise"><b>Ejercicio final:</b> escribe tu plan en una página: qué mercado, en qué horario, qué niveles usas, qué tiene que pasar en el orderflow para entrar, dónde va el stop, dónde el objetivo y cuándo dejas de operar ese día.</div>
+  <h3>Checklist final</h3>
+  <ul class="check" data-phase="9">
+    <li><input type="checkbox">Tengo un plan de trading escrito en una página.</li>
+    <li><input type="checkbox">Llevo al menos 40 sesiones en simulado siguiendo el plan.</li>
+    <li><input type="checkbox">Mis estadísticas en simulado son positivas y respeto el límite diario.</li>
+  </ul>
+</section>
+
+<section class="phase" id="como-ensenar">
+  <h2>Cómo enseñar cada lección para que llegue a todo el mundo</h2>
+  <div class="flow" style="margin-top:18px">
+    <div class="st"><small>1</small><b>Una sola idea</b><span>Vídeo o texto de 5–10 minutos con un único concepto.</span></div>
+    <div class="st"><small>2</small><b>Una analogía</b><span>Mercadillo, subasta, cola del supermercado…</span></div>
+    <div class="st"><small>3</small><b>Una animación</b><span>Como las de esta página: algo que se mueve y se puede tocar.</span></div>
+    <div class="st"><small>4</small><b>Un ejemplo real</b><span>Captura o replay de un día concreto del ES o NQ.</span></div>
+    <div class="st"><small>5</small><b>Un mini test</b><span>3 preguntas. Si fallas una, repites la lección.</span></div>
+  </div>
+  <table class="tb">
+    <tr><th>Bloque</th><th>Fases</th><th>Duración orientativa</th><th>Resultado</th></tr>
+    <tr><td><b>A · Entender</b></td><td>0, 1, 2</td><td>3 semanas</td><td>Sabe qué es un futuro y por qué se mueve el precio.</td></tr>
+    <tr><td><b>B · Leer y protegerse</b></td><td>3, 4, 5</td><td>3 semanas</td><td>Lee un gráfico, calcula riesgo y opera en simulado sin errores.</td></tr>
+    <tr><td><b>C · Volumen y orderflow</b></td><td>6, 7, 8</td><td>7 semanas</td><td>Lee perfil, DOM, cinta, footprint y CVD.</td></tr>
+    <tr><td><b>D · Practicar</b></td><td>9</td><td>3+ meses</td><td>Tiene un plan escrito y estadísticas en simulado.</td></tr>
+  </table>
+  <p class="t3" style="font-size:13px">Las duraciones suponen unas 5–7 horas por semana. Lo importante no es la fecha, sino completar el checklist de cada fase.</p>
+</section>
+
+<footer>
+  <p><b style="color:#BEC2C8">Aviso:</b> contenido educativo. No es asesoramiento financiero ni una recomendación de inversión. Operar futuros conlleva un riesgo elevado de pérdidas. Los resultados pasados no garantizan resultados futuros. Las animaciones son simulaciones didácticas, no datos reales de mercado.</p>
+  <p>OPB Labs · youtube.com/@opb_labs</p>
+</footer>
+</div>
+
+<script>
+const C={bg:'#0f1012',grid:'#1d2025',acc:'#1496BE',w:'#F2F2F2',t2:'#BEC2C8',t3:'#787C82',g:'#4CD964',r:'#FF5252',y:'#FFE14D',dim:'#3a3d44'};
+const rnd=(a,b)=>a+Math.random()*(b-a), rint=(a,b)=>Math.floor(rnd(a,b+1));
+const fmt=(n,d=2)=>n.toLocaleString('es-ES',{minimumFractionDigits:d,maximumFractionDigits:d});
+const money=n=>(n<0?'−':'')+Math.abs(n).toLocaleString('es-ES',{maximumFractionDigits:2})+' $';
+function fit(cv,h){const dpr=Math.min(window.devicePixelRatio||1,2);const w=cv.clientWidth||600;if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+'px';}const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);return{c,w,h};}
+function watch(el,cb){if('IntersectionObserver' in window){new IntersectionObserver(es=>es.forEach(e=>cb(e.isIntersecting)),{threshold:0.02}).observe(el)}else cb(true)}
+function hgrid(c,x0,x1,y0,y1,n){c.strokeStyle=C.grid;c.lineWidth=1;for(let i=0;i<=n;i++){const y=Math.round(y0+(y1-y0)*i/n)+.5;c.beginPath();c.moveTo(x0,y);c.lineTo(x1,y);c.stroke();}}
+
+/* ---------- Roadmap + progreso ---------- */
+(function(){
+  const nav=document.getElementById('roadmap');
+  document.querySelectorAll('section.phase[data-title]').forEach((s,i)=>{
+    const a=document.createElement('a');a.className='chip';a.href='#'+s.id;
+    a.innerHTML='<small>FASE '+i+'</small><strong>'+s.dataset.title+'</strong><span class="bar"></span>';nav.appendChild(a);
+  });
+  let saved={};try{saved=JSON.parse(localStorage.getItem('plan-of-check')||'{}')}catch(e){}
+  const boxes=[...document.querySelectorAll('.check input')];
+  boxes.forEach((b,i)=>{b.checked=!!saved[i];b.closest('li').classList.toggle('done',b.checked);
+    b.addEventListener('change',()=>{saved[i]=b.checked;b.closest('li').classList.toggle('done',b.checked);try{localStorage.setItem('plan-of-check',JSON.stringify(saved))}catch(e){}upd();});
+    b.closest('li').addEventListener('click',e=>{if(e.target!==b){b.checked=!b.checked;b.dispatchEvent(new Event('change'))}});
+  });
+  function upd(){const t=boxes.length,d=boxes.filter(b=>b.checked).length,p=Math.round(d/t*100);
+    document.getElementById('pfill').style.width=p+'%';document.getElementById('ptext').textContent=p+'%';
+    const chips=nav.querySelectorAll('.chip');
+    document.querySelectorAll('.check').forEach(ul=>{const bs=[...ul.querySelectorAll('input')];const f=bs.filter(b=>b.checked).length/bs.length;const ch=chips[+ul.dataset.phase];if(ch)ch.querySelector('.bar').style.width=(f*100)+'%';});
+  }
+  upd();
+})();
+
+/* ---------- Fase 1: subasta ---------- */
+(function(){
+  const cv=document.getElementById('cvAuction'),sl=document.getElementById('slPressure'),msg=document.getElementById('msgAuction');
+  let hist=[];for(let i=0;i<60;i++)hist.push(100+Math.round(Math.sin(i/6)*2));let on=false;
+  function person(c,x,y,col,bob){c.fillStyle=col;c.beginPath();c.arc(x,y-7+bob,4.5,0,7);c.fill();c.beginPath();c.moveTo(x-7,y+9+bob);c.quadraticCurveTo(x,y-6+bob,x+7,y+9+bob);c.fill();}
+  let t=0;
+  function step(){const b=+sl.value/100;const pUp=0.5+(b-0.5)*0.9;let p=hist[hist.length-1];p+=Math.random()<pUp?1:-1;hist.push(p);if(hist.length>140)hist.shift();t++;}
+  function draw(){
+    const {c,w,h}=fit(cv,250);c.fillStyle=C.bg;c.fillRect(0,0,w,h);
+    const b=+sl.value,left=Math.min(240,w*0.36),nb=Math.round(b/5),ns=20-nb;
+    c.font='700 12px Montserrat';c.fillStyle=C.g;c.fillText('Compradores '+nb,12,22);c.fillStyle=C.r;c.fillText('Vendedores '+ns,left/2+6,22);
+    const cell=Math.min(24,(left/2-16)/4);
+    for(let i=0;i<nb;i++)person(c,22+(i%4)*cell,52+Math.floor(i/4)*30,C.g,Math.sin(t/2+i)*(b>55?2:0.6));
+    for(let i=0;i<ns;i++)person(c,left/2+16+(i%4)*cell,52+Math.floor(i/4)*30,C.r,Math.sin(t/2+i)*(b<45?2:0.6));
+    const x0=left+16,x1=w-60,mn=Math.min(...hist)-3,mx=Math.max(...hist)+3,y=v=>16+(h-32)*(1-(v-mn)/(mx-mn));
+    hgrid(c,x0,x1,16,h-16,5);
+    c.strokeStyle=C.acc;c.lineWidth=2.2;c.beginPath();hist.forEach((v,i)=>{const X=x0+i*((x1-x0)/139);i?c.lineTo(X,y(v)):c.moveTo(X,y(v))});c.stroke();
+    const lv=hist[hist.length-1],lx=x0+(hist.length-1)*((x1-x0)/139);
+    c.fillStyle=C.w;c.beginPath();c.arc(lx,y(lv),4,0,7);c.fill();
+    c.fillStyle=C.acc;c.fillRect(x1+6,y(lv)-10,52,20);c.fillStyle='#fff';c.font='600 12px JetBrains Mono';c.fillText(lv.toFixed(0),x1+14,y(lv)+4);
+    c.fillStyle=C.t3;c.font='600 11px Montserrat';c.fillText('PRECIO',x0,12);
+  }
+  function text(){const b=+sl.value;msg.innerHTML=b>56?'<b class="gr">Más compradores con prisa que vendedores:</b> se quedan sin nadie que les venda barato y tienen que pagar más. El precio <b>sube</b>.':b<44?'<b class="rd">Más vendedores con prisa que compradores:</b> tienen que aceptar precios cada vez más bajos para vender. El precio <b>baja</b>.':'<b>Equilibrio:</b> ninguno de los dos lados domina. El precio va de lado (rango).';}
+  sl.addEventListener('input',text);text();
+  watch(cv,v=>on=v);setInterval(()=>{if(on){step();draw();}},110);draw();addEventListener('resize',draw);
+})();
+
+/* ---------- Fase 2: calculadora ---------- */
+(function(){
+  const c=document.getElementById('ccC'),p=document.getElementById('ccP'),n=document.getElementById('ccN');
+  function u(){const m=+c.value,pts=+p.value||0,q=Math.max(1,+n.value||1),r=pts*m*q;
+    document.getElementById('ccT').textContent=fmt(pts*4,0);const R=document.getElementById('ccR');R.textContent=money(r);R.className=r>=0?'gr':'rd';
+    const name=c.options[c.selectedIndex].text;
+    document.getElementById('ccMsg').innerHTML='Si el '+name+' se mueve <b>'+fmt(pts,2)+' puntos</b> a tu favor con '+q+' contrato'+(q>1?'s':'')+', ganas <b>'+money(Math.abs(r))+'</b>. Si se mueve en contra, pierdes lo mismo.';}
+  [c,p,n].forEach(e=>e.addEventListener('input',u));u();
+})();
+
+/* ---------- Fase 3: vela ---------- */
+(function(){
+  const cv=document.getElementById('cvCandle');let on=false,candles=[],cur,price=200,drift=0;const N=46;
+  function nc(){cur={o:price,h:price,l:price,c:price,ticks:[price]};drift=rnd(-.35,.35);}
+  for(let k=0;k<7;k++){nc();for(let i=0;i<N;i++)tick();candles.push(cur);}nc();
+  function tick(){price+=rnd(-1.6,1.6)+drift;cur.ticks.push(price);cur.h=Math.max(cur.h,price);cur.l=Math.min(cur.l,price);cur.c=price;}
+  function step(){tick();if(cur.ticks.length>N){candles.push(cur);if(candles.length>9)candles.shift();nc();}}
+  function candle(c,x,cw,k,y){const col=k.c>=k.o?C.g:C.r;c.strokeStyle=col;c.fillStyle=col;c.lineWidth=1.5;c.beginPath();c.moveTo(x,y(k.h));c.lineTo(x,y(k.l));c.stroke();const t=Math.min(y(k.o),y(k.c)),bh=Math.max(2,Math.abs(y(k.o)-y(k.c)));c.fillRect(x-cw/2,t,cw,bh);}
+  function draw(){
+    const {c,w,h}=fit(cv,290);c.fillStyle=C.bg;c.fillRect(0,0,w,h);
+    const all=[...candles,cur];let mn=Math.min(...all.map(k=>k.l)),mx=Math.max(...all.map(k=>k.h));const pad=(mx-mn)*.12+2;mn-=pad;mx+=pad;
+    const y=v=>20+(h-40)*(1-(v-mn)/(mx-mn));const split=w*0.42;
+    hgrid(c,0,w,20,h-20,6);
+    c.fillStyle=C.t3;c.font='700 11px Montserrat';c.fillText('DENTRO DEL PERIODO',12,14);c.fillText('VELAS',split+20,14);
+    // linea de ticks
+    const L=12,R=split-70;
+    [['o','Apertura',C.t2],['h','Máximo',C.g],['l','Mínimo',C.r],['c','Cierre',C.w]].forEach(([k,lab,col])=>{c.setLineDash([4,4]);c.strokeStyle=col;c.globalAlpha=.55;c.beginPath();c.moveTo(L,y(cur[k]));c.lineTo(split+ (w-split)-40,y(cur[k]));c.stroke();c.setLineDash([]);c.globalAlpha=1;});
+    c.strokeStyle=C.acc;c.lineWidth=2;c.beginPath();cur.ticks.forEach((v,i)=>{const X=L+i*((R-L)/N);i?c.lineTo(X,y(v)):c.moveTo(X,y(v))});c.stroke();
+    const lx=L+(cur.ticks.length-1)*((R-L)/N);c.fillStyle=C.w;c.beginPath();c.arc(lx,y(cur.c),3.5,0,7);c.fill();
+    c.font='600 11px Montserrat';const labs=[['Máx',cur.h,C.g],['Mín',cur.l,C.r],['Ap.',cur.o,C.t2],['Cierre',cur.c,C.w]];
+    labs.sort((a,b)=>y(a[1])-y(b[1]));let prev=-99;labs.forEach(([t,v,col])=>{let yy=Math.max(y(v)+4,prev+13);prev=yy;c.fillStyle=col;c.fillText(t,R+8,yy);});
+    c.strokeStyle=C.line||'#26292f';c.beginPath();c.moveTo(split,20);c.lineTo(split,h-20);c.stroke();
+    // velas
+    const n=10,cw=Math.min(22,(w-split-60)/n*0.6),gap=(w-split-60)/n;
+    all.forEach((k,i)=>{const x=split+30+(n-all.length+i)*gap+gap/2;candle(c,x,cw,k,y);if(k===cur){c.strokeStyle=C.y;c.lineWidth=1.5;c.strokeRect(x-cw/2-5,y(k.h)-5,cw+10,y(k.l)-y(k.h)+10);}});
+    // progreso
+    c.fillStyle=C.grid;c.fillRect(12,h-10,split-24,4);c.fillStyle=C.acc;c.fillRect(12,h-10,(split-24)*(cur.ticks.length/N),4);
+  }
+  watch(cv,v=>on=v);setInterval(()=>{if(on){step();draw();}},90);draw();addEventListener('resize',draw);
+})();
+
+/* ---------- Fase 4: riesgo ---------- */
+(function(){
+  const ids=['rkCap','rkPct','rkStop','rkC'].map(i=>document.getElementById(i));
+  function u(){const cap=+ids[0].value||0,pct=+ids[1].value||0,st=+ids[2].value||0,m=+ids[3].value,name=ids[3].options[ids[3].selectedIndex].text;
+    const max=cap*pct/100,per=st*m,n=per>0?Math.floor(max/per):0;
+    document.getElementById('rkMax').textContent=money(max);document.getElementById('rkPer').textContent=money(per);
+    const N=document.getElementById('rkN');N.textContent=n;N.className=n>0?'gr':'rd';
+    document.getElementById('rkMsg').innerHTML=n>0?'Con un stop de <b>'+fmt(st)+' puntos</b> puedes operar <b>'+n+' '+name+'</b> sin arriesgar más del '+fmt(pct)+' % de la cuenta. Si el stop salta, pierdes '+money(n*per)+'.':'<b class="rd">Ni un solo contrato de '+name+'.</b> Con este stop, un contrato arriesga más de lo permitido. Usa un micro, reduce el stop o no operes.';}
+  ids.forEach(e=>e.addEventListener('input',u));u();
+  const cv=document.getElementById('cvRR'),s=document.getElementById('rrS');
+  function d(){const R=+s.value;document.getElementById('rrV').textContent=fmt(R,2).replace(/,?0+$/,'');const {c,w,h}=fit(cv,150);c.fillStyle=C.bg;c.fillRect(0,0,w,h);
+    const be=1/(1+R),bx=40,bw=w-80;c.fillStyle=C.r;c.globalAlpha=.25;c.fillRect(bx,40,bw*be,34);c.fillStyle=C.g;c.fillRect(bx+bw*be,40,bw*(1-be),34);c.globalAlpha=1;
+    c.strokeStyle=C.y;c.lineWidth=2;c.beginPath();c.moveTo(bx+bw*be,30);c.lineTo(bx+bw*be,84);c.stroke();
+    c.fillStyle=C.y;c.font='800 15px Montserrat';const t=fmt(be*100,0)+' %';c.fillText(t,Math.min(w-70,Math.max(bx,bx+bw*be-c.measureText(t).width/2)),24);
+    c.font='600 12px Montserrat';c.fillStyle=C.r;c.fillText('pierdes dinero',bx+6,62);c.fillStyle=C.g;const g='ganas dinero';c.fillText(g,bx+bw-c.measureText(g).width-6,62);
+    c.fillStyle=C.t3;c.fillText('0 %',bx,104);c.fillText('100 % de aciertos',bx+bw-110,104);
+    // 10 operaciones
+    const wins=Math.ceil(10*be+0.0001),bxw=(bw-18)/10;for(let i=0;i<10;i++){c.fillStyle=i<wins?C.g:C.r;c.globalAlpha=.85;c.fillRect(bx+i*(bxw+2),118,bxw,18);}c.globalAlpha=1;
+    document.getElementById('rrMsg').innerHTML='Si cada vez que ganas consigues <b>'+fmt(R,2).replace(/,?0+$/,'')+'</b> veces lo que arriesgas, solo necesitas acertar más del <b class="yl">'+fmt(be*100,0)+' %</b> de las operaciones para no perder dinero (sin contar comisiones). Abajo: '+wins+' aciertos de cada 10 ya te dejan en positivo o en cero.';}
+  s.addEventListener('input',d);d();addEventListener('resize',d);
+})();
+
+/* ---------- Fase 6: perfil de volumen ---------- */
+(function(){
+  const cv=document.getElementById('cvProfile');let on=false,hist,vol,p,center,t;const MAX=520;
+  function reset(){p=50;center=50;hist=[p];vol={};t=0;}reset();
+  document.getElementById('pfReset').onclick=()=>{reset();draw();};
+  function step(){if(t>=MAX)return;t++;if(t%140===0)center+=rint(-4,4);p+=(Math.random()<0.5+(center-p)*0.045?1:-1);hist.push(p);vol[p]=(vol[p]||0)+rint(1,6);}
+  function va(){const lv=Object.keys(vol).map(Number).sort((a,b)=>a-b);const tot=lv.reduce((s,k)=>s+vol[k],0);let poc=lv[0];lv.forEach(k=>{if(vol[k]>vol[poc])poc=k});let lo=poc,hi=poc,acc=vol[poc];const mn=lv[0],mx=lv[lv.length-1];
+    while(acc<tot*0.7&&(lo>mn||hi<mx)){const up=hi<mx?(vol[hi+1]||0):-1,dn=lo>mn?(vol[lo-1]||0):-1;if(up>=dn){hi++;acc+=Math.max(0,up)}else{lo--;acc+=Math.max(0,dn)}}return{poc,lo,hi,mn,mx};}
+  function draw(){const {c,w,h}=fit(cv,300);c.fillStyle=C.bg;c.fillRect(0,0,w,h);
+    const mn=Math.min(...hist)-3,mx=Math.max(...hist)+3,rows=mx-mn+1,rh=(h-30)/rows,y=v=>15+(mx-v)*rh;
+    const split=w*0.56,x0=12,x1=split-20;hgrid(c,x0,w-10,15,h-15,6);
+    c.fillStyle=C.t3;c.font='700 11px Montserrat';c.fillText('PRECIO EN EL TIEMPO',x0,11);c.fillText('VOLUMEN POR PRECIO',split+10,11);
+    const k=Object.keys(vol).length?va():null;
+    if(k){c.fillStyle='rgba(20,150,190,.08)';c.fillRect(x0,y(k.hi)-rh/2,w-x0-10,(k.hi-k.lo+1)*rh);}
+    c.strokeStyle=C.acc;c.lineWidth=1.6;c.beginPath();hist.forEach((v,i)=>{const X=x0+i*((x1-x0)/MAX);i?c.lineTo(X,y(v)):c.moveTo(X,y(v))});c.stroke();
+    if(k){const vm=vol[k.poc];Object.keys(vol).forEach(s=>{const lv=+s,bw=(w-split-30)*(vol[lv]/vm);c.fillStyle=lv===k.poc?C.y:(lv>=k.lo&&lv<=k.hi?C.acc:C.dim);c.fillRect(split+10,y(lv)-rh/2+1,bw,Math.max(1,rh-2));});
+      c.setLineDash([5,4]);c.lineWidth=1;[[k.poc,C.y,'POC'],[k.hi,C.acc,'VAH'],[k.lo,C.acc,'VAL']].forEach(([lv,col,lab])=>{c.strokeStyle=col;c.beginPath();c.moveTo(x0,y(lv));c.lineTo(split+6,y(lv));c.stroke();c.fillStyle=col;c.font='700 11px Montserrat';c.fillText(lab,split-34,y(lv)-3);});c.setLineDash([]);}
+    c.fillStyle=C.w;const lx=x0+(hist.length-1)*((x1-x0)/MAX);c.beginPath();c.arc(lx,y(p),3.5,0,7);c.fill();
+    if(t>=MAX){c.fillStyle='rgba(15,16,18,.8)';c.fillRect(x0+8,h-44,300,28);c.fillStyle=C.t2;c.font='600 12px Montserrat';c.fillText('Sesión terminada · pulsa "Volver a empezar"',x0+16,h-26);}}
+  watch(cv,v=>on=v);setInterval(()=>{if(on&&t<MAX){step();step();draw();}},45);draw();addEventListener('resize',draw);
+})();
+
+/* ---------- Fase 7: DOM ---------- */
+(function(){
+  const tbl=document.getElementById('domTable'),tns=document.getElementById('tns'),msg=document.getElementById('domMsg'),qSel=document.getElementById('domQ');
+  const book={};let bestBid=84000,bestAsk=84001,last=84000;const flashes=new Set();const prints=[];
+  const L=i=>book[i]||(book[i]={bid:0,ask:0,vol:0});
+  for(let i=0;i<40;i++){L(bestAsk+i).ask=rint(6,38);L(bestBid-i).bid=rint(6,38);}
+  const px=i=>fmt(i/4,2);
+  function time(){const d=new Date();return d.toTimeString().slice(0,8)}
+  function print(i,q,side){prints.unshift({t:time(),p:i,q,side});if(prints.length>40)prints.pop();}
+  function refill(){ // los creadores de mercado rellenan el hueco
+    if(bestAsk-bestBid>1){setTimeout(()=>{if(bestAsk-bestBid>1){const up=last>=bestAsk-1&&last===bestAsk-1?true:null;for(let i=bestBid+1;i<bestAsk;i++){const l=L(i);if(lastSide==='buy'){l.bid=rint(4,16);}else{l.ask=rint(4,16);}}
+      if(lastSide==='buy')bestBid=bestAsk-1;else bestAsk=bestBid+1;render();}},450);}
+  }
+  let lastSide='buy';
+  function market(side,q){lastSide=side;const parts=[];let rem=q;const start=side==='buy'?bestAsk:bestBid;
+    while(rem>0){const i=side==='buy'?bestAsk:bestBid,l=L(i),avail=side==='buy'?l.ask:l.bid;
+      if(avail<=0){if(side==='buy'){bestAsk++;if(L(bestAsk).ask<=0)L(bestAsk).ask=rint(6,30);}else{bestBid--;if(L(bestBid).bid<=0)L(bestBid).bid=rint(6,30);}continue;}
+      const take=Math.min(rem,avail);if(side==='buy')l.ask-=take;else l.bid-=take;l.vol+=take;rem-=take;last=i;flashes.add(i);print(i,take,side);parts.push(take+' en '+px(i));
+      if((side==='buy'?l.ask:l.bid)===0){if(side==='buy'){bestAsk++;if(L(bestAsk).ask<=0)L(bestAsk).ask=rint(6,30);}else{bestBid--;if(L(bestBid).bid<=0)L(bestBid).bid=rint(6,30);}}}
+    const moved=side==='buy'?last-start:start-last;
+    msg.innerHTML=(side==='buy'?'<b class="gr">Compra a mercado de '+q+'</b>: ':'<b class="rd">Venta a mercado de '+q+'</b>: ')+'se ejecutó '+parts.join(', ')+'. '+(moved>0?'Se agotó la liquidez de '+moved+' nivel'+(moved>1?'es':'')+', así que <b>el precio '+(side==='buy'?'subió':'bajó')+' '+moved+' tick'+(moved>1?'s':'')+'</b>.':(side==='buy'?'Había vendedores suficientes esperando: <b>el precio no se movió</b>.':'Había compradores suficientes esperando: <b>el precio no se movió</b>.'));
+    refill();render();}
+  function limit(side){const i=side==='buy'?bestBid:bestAsk,l=L(i);if(side==='buy')l.bid+=25;else l.ask+=25;flashes.add(i);
+    msg.innerHTML='Has añadido una <b>orden límite de '+(side==='buy'?'compra':'venta')+' de 25 en '+px(i)+'</b>. No se ejecuta todavía: espera a que alguien llegue a mercado. Es <b>liquidez pasiva</b> y hace más difícil que el precio '+(side==='buy'?'baje':'suba')+'.';render();}
+  function render(){const center=Math.round((bestBid+bestAsk)/2);let h='<tr><th>Compran (Bid)</th><th>Precio</th><th>Venden (Ask)</th><th>Vol.</th></tr>';
+    let mx=1;for(let i=center+7;i>=center-7;i--){const l=L(i);mx=Math.max(mx,l.bid,l.ask);}
+    for(let i=center+7;i>=center-7;i--){const l=L(i),f=flashes.has(i)?' flash':'';
+      h+='<tr class="'+(i===last?'last':'')+'"><td class="bid'+f+'">'+(l.bid>0&&i<=bestBid?'<div class="b" style="width:'+(l.bid/mx*100)+'%"></div><span class="gr">'+l.bid+'</span>':'')+'</td><td class="px">'+px(i)+'</td><td class="ask'+f+'">'+(l.ask>0&&i>=bestAsk?'<div class="b" style="width:'+(l.ask/mx*100)+'%"></div><span class="rd">'+l.ask+'</span>':'')+'</td><td class="vol">'+(l.vol||'')+'</td></tr>';}
+    tbl.innerHTML=h;flashes.clear();
+    tns.innerHTML=prints.slice(0,16).map(p=>'<div class="row '+(p.side==='buy'?'b':'s')+(p.q>=20?' big':'')+'"><span>'+p.t+'</span><span>'+px(p.p)+'</span><span>'+p.q+'</span></div>').join('')||'<div class="t3" style="padding:8px;font-family:Montserrat">Aún no hay operaciones. Las compras a mercado salen en verde y las ventas en rojo.</div>';}
+  document.getElementById('mBuy').onclick=()=>market('buy',+qSel.value);
+  document.getElementById('mSell').onclick=()=>market('sell',+qSel.value);
+  document.getElementById('lBuy').onclick=()=>limit('buy');
+  document.getElementById('lSell').onclick=()=>limit('sell');
+  let auto=false,vis=false;const ab=document.getElementById('domAuto');
+  ab.onclick=()=>{auto=!auto;ab.classList.toggle('on',auto);ab.textContent=auto?'❚❚ Pausar mercado':'▶ Mercado automático';};
+  watch(tbl,v=>vis=v);
+  setInterval(()=>{if(!auto||!vis)return;const r=Math.random();if(r<.44)market('buy',rint(1,r<.06?45:14));else if(r<.88)market('sell',rint(1,r>.82?45:14));else limit(Math.random()<.5?'buy':'sell');},750);
+  render();
+})();
+
+/* ---------- Fase 8: footprint ---------- */
+(function(){
+  const cv=document.getElementById('cvFoot'),msg=document.getElementById('fpMsg');let on=false,sc='compra',fp,k,p,step,timer=0;const STEPS=110;
+  const S={
+    compra:{path:[0,-1,2,4,6,7,6],bias:s=>.68,size:()=>rint(1,9),text:'Las compras agresivas (columna verde) dominan en casi todos los precios. Aparecen <b class="gr">desequilibrios compradores apilados</b> y el <b>delta es claramente positivo</b>: los compradores tienen prisa y el precio sube.'},
+    venta:{path:[0,1,-2,-4,-6,-7,-6],bias:s=>.32,size:()=>rint(1,9),text:'Las ventas agresivas (columna roja) dominan. Se ven <b class="rd">desequilibrios vendedores apilados</b> y el <b>delta es negativo</b>: los vendedores empujan el precio hacia abajo.'},
+    absorcion:{path:[0,-2,-4,-4,-4,-3,-1,1,3],bias:s=>s<.6?.25:.7,size:(lv,s)=>(lv<=-4&&s<.62)?rint(8,22):rint(1,8),text:'Mira el <b>mínimo</b>: entraron muchísimas ventas agresivas pero el precio <b>no consiguió bajar más</b>. Alguien con órdenes límite de compra grandes las absorbió. Cuando los vendedores se cansan, el precio se gira al alza. Eso es <b class="yl">absorción</b>.'}
+  };
+  function reset(){fp={};k={o:0,h:0,l:0,c:0};p=0;step=0;msg.innerHTML='Construyendo la vela… cada número es la cantidad de contratos negociados a ese precio.';}
+  function target(s){const P=S[sc].path,f=s*(P.length-1),i=Math.floor(f),r=f-i;return Math.round(P[i]+(P[Math.min(i+1,P.length-1)]-P[i])*r);}
+  function tick(){if(step>=STEPS)return;const s=step/STEPS,tg=target(s);
+    if(p<tg&&Math.random()<.6)p++;else if(p>tg&&Math.random()<.6)p--;else if(Math.random()<.15)p+=Math.random()<.5?1:-1;
+    if(sc==='absorcion'&&s<.62&&p<-4)p=-4;
+    k.h=Math.max(k.h,p);k.l=Math.min(k.l,p);k.c=p;
+    for(let j=0;j<3;j++){const buy=Math.random()<S[sc].bias(s);const q=S[sc].size(p,s);const l=fp[p]||(fp[p]={b:0,a:0});if(buy)l.a+=q;else l.b+=q;}
+    step++;if(step>=STEPS)msg.innerHTML=S[sc].text;}
+  function draw(){const {c,w,h}=fit(cv,360);c.fillStyle=C.bg;c.fillRect(0,0,w,h);
+    const lv=Object.keys(fp).map(Number);const hi=Math.max(k.h,...lv,3),lo=Math.min(k.l,...lv,-3);const rows=hi-lo+1;const rh=Math.min(28,(h-70)/rows);
+    const top=20+((h-70)-rows*rh)/2,yy=v=>top+(hi-v)*rh;const cx=Math.min(w*0.42,280),cwid=170;
+    let tot=0,d=0,poc=null;lv.forEach(v=>{const l=fp[v];tot+=l.a+l.b;d+=l.a-l.b;if(poc===null||l.a+l.b>fp[poc].a+fp[poc].b)poc=v;});
+    const mx=Math.max(1,...lv.map(v=>Math.max(fp[v].a,fp[v].b)));
+    // escala precios
+    c.font='500 11px JetBrains Mono';c.fillStyle=C.t3;
+    for(let v=hi;v>=lo;v--){c.fillText(fmt(5000+v*0.25),cx-cwid/2-118,yy(v)+rh/2+4);}
+    // vela fina
+    const kx=cx-cwid/2-30,col=k.c>=k.o?C.g:C.r;if(lv.length){c.strokeStyle=col;c.lineWidth=2;c.beginPath();c.moveTo(kx,yy(k.h)+2);c.lineTo(kx,yy(k.l)+rh-2);c.stroke();const t=Math.min(yy(k.o),yy(k.c)),b=Math.max(yy(k.o),yy(k.c))+rh;c.fillStyle=col;c.fillRect(kx-6,t+2,12,b-t-4);}
+    // celdas
+    for(let v=hi;v>=lo;v--){const l=fp[v];const y=yy(v);if(!l)continue;
+      const x=cx-cwid/2;c.fillStyle='rgba(255,82,82,'+(0.08+0.45*l.b/mx)+')';c.fillRect(x,y+1,cwid/2-1,rh-2);c.fillStyle='rgba(76,217,100,'+(0.08+0.45*l.a/mx)+')';c.fillRect(cx+1,y+1,cwid/2-1,rh-2);
+      c.font='600 '+Math.min(13,rh*0.5)+'px JetBrains Mono';c.textAlign='right';c.fillStyle=C.w;c.fillText(l.b,cx-10,y+rh/2+4);c.textAlign='left';c.fillText(l.a,cx+10,y+rh/2+4);c.textAlign='left';
+      const below=fp[v-1],above=fp[v+1];
+      if(below&&l.a>=3*Math.max(1,below.b)&&l.a>=12){c.strokeStyle=C.g;c.lineWidth=2;c.strokeRect(cx+2,y+2,cwid/2-3,rh-4);}
+      if(above&&l.b>=3*Math.max(1,above.a)&&l.b>=12){c.strokeStyle=C.r;c.lineWidth=2;c.strokeRect(cx-cwid/2+1,y+2,cwid/2-3,rh-4);}
+      if(v===poc&&step>10){c.strokeStyle=C.y;c.lineWidth=1.5;c.strokeRect(cx-cwid/2-3,y-1,cwid+6,rh+2);}
+    }
+    c.fillStyle=C.t3;c.font='700 11px Montserrat';c.textAlign='center';c.fillText('VENTAS × COMPRAS',cx,14);c.textAlign='left';
+    // delta / volumen
+    const by=h-40;c.fillStyle=C.panel||'#1a1c20';c.fillRect(cx-cwid/2,by,cwid,30);c.font='800 14px Montserrat';c.textAlign='center';c.fillStyle=d>=0?C.g:C.r;c.fillText('Delta '+(d>0?'+':'')+d,cx,by+20);c.textAlign='left';
+    // panel lateral
+    const px0=cx+cwid/2+30;if(w-px0>180){c.fillStyle=C.t3;c.font='700 11px Montserrat';c.fillText('RESUMEN DE LA VELA',px0,40);
+      const items=[['Volumen total',tot,C.w],['Compras agresivas',lv.reduce((s,v)=>s+fp[v].a,0),C.g],['Ventas agresivas',lv.reduce((s,v)=>s+fp[v].b,0),C.r],['Delta (compras − ventas)',(d>0?'+':'')+d,d>=0?C.g:C.r]];
+      items.forEach(([t,v,col],i)=>{c.fillStyle=C.t2;c.font='500 13px Montserrat';c.fillText(t,px0,70+i*44);c.fillStyle=col;c.font='800 18px Montserrat';c.fillText(v,px0,90+i*44);});
+      c.fillStyle=C.grid;c.fillRect(px0,h-26,w-px0-20,5);c.fillStyle=C.acc;c.fillRect(px0,h-26,(w-px0-20)*step/STEPS,5);}
+  }
+  document.querySelectorAll('[data-fs]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-fs]').forEach(x=>x.classList.remove('on'));b.classList.add('on');sc=b.dataset.fs;reset();});
+  reset();watch(cv,v=>on=v);setInterval(()=>{if(!on)return;if(step<STEPS){tick();draw();}else{timer++;if(timer>90){timer=0;reset();}}},70);draw();addEventListener('resize',draw);
+})();
+
+/* ---------- Fase 8: CVD ---------- */
+(function(){
+  const cv=document.getElementById('cvCVD'),msg=document.getElementById('cvdMsg');let on=false,sc='confirma',pr=[],cd=[],shown=0,hold=0;const N=130;
+  const TX={confirma:'El precio sube y el CVD también: <b class="gr">las compras agresivas acompañan la subida</b>. Es un movimiento sano, con combustible.',
+    divergencia:'El precio hace un <b>máximo más alto</b>, pero el CVD hace un <b>máximo más bajo</b>: el segundo empujón se hizo con menos compradores. <b class="yl">Divergencia</b>: la subida se queda sin fuerza y el precio se gira.',
+    absorcion:'El CVD cae sin parar (muchas ventas agresivas) pero <b>el precio no baja</b>. Alguien está comprando con órdenes límite todo lo que le venden. Es <b class="yl">absorción</b>: cuando los vendedores se rinden, el precio se dispara al alza.'};
+  function gen(){pr=[];cd=[];let n=()=>rnd(-.6,.6);
+    for(let i=0;i<N;i++){const t=i/N;let P,D;
+      if(sc==='confirma'){P=t*30+Math.sin(i/5)*2.4;D=t*900+Math.sin(i/5)*70;}
+      else if(sc==='divergencia'){P=t<.38?t/.38*24:t<.55?24-(t-.38)/.17*10:t<.8?14+(t-.55)/.25*14:28-(t-.8)/.2*16;P+=Math.sin(i/3)*1.2;
+        D=t<.38?t/.38*900:t<.55?900-(t-.38)/.17*380:t<.8?520+(t-.55)/.25*230:750-(t-.8)/.2*520;D+=Math.sin(i/3)*40;}
+      else{P=t<.78?Math.sin(i/4)*2.5+t*2:2+(t-.78)/.22*24;D=t<.78?-t/.78*900+Math.sin(i/4)*60:-900+(t-.78)/.22*500;}
+      pr.push(P+n());cd.push(D+n()*30);}shown=0;hold=0;msg.innerHTML='Dibujando… fíjate en si las dos líneas van en la misma dirección.';}
+  function line(c,arr,x0,x1,y0,y1,col,n){const mn=Math.min(...arr),mx=Math.max(...arr),pad=(mx-mn)*.12||1;const y=v=>y0+(y1-y0)*(1-(v-mn+pad)/(mx-mn+2*pad));c.strokeStyle=col;c.lineWidth=2.2;c.beginPath();for(let i=0;i<n;i++){const X=x0+i*(x1-x0)/(N-1);i?c.lineTo(X,y(arr[i])):c.moveTo(X,y(arr[i]))}c.stroke();return{y,X:i=>x0+i*(x1-x0)/(N-1)};}
+  function draw(){const {c,w,h}=fit(cv,330);c.fillStyle=C.bg;c.fillRect(0,0,w,h);const x0=16,x1=w-16,mid=h*0.52;
+    hgrid(c,x0,x1,22,mid-10,4);hgrid(c,x0,x1,mid+22,h-12,4);
+    c.fillStyle=C.t3;c.font='700 11px Montserrat';c.fillText('PRECIO',x0,14);c.fillText('CVD · DELTA ACUMULADO',x0,mid+14);
+    const n=Math.max(2,shown);const a=line(c,pr,x0,x1,22,mid-10,C.acc,n);const b=line(c,cd,x0,x1,mid+22,h-12,'#B98CFF',n);
+    if(shown>=N){c.setLineDash([6,5]);c.lineWidth=2;
+      if(sc==='divergencia'){const i1=Math.round(N*.38),i2=Math.round(N*.8);c.strokeStyle=C.g;c.beginPath();c.moveTo(a.X(i1),a.y(pr[i1])-6);c.lineTo(a.X(i2),a.y(pr[i2])-6);c.stroke();c.strokeStyle=C.r;c.beginPath();c.moveTo(b.X(i1),b.y(cd[i1])-6);c.lineTo(b.X(i2),b.y(cd[i2])-6);c.stroke();
+        c.setLineDash([]);c.font='700 12px Montserrat';c.fillStyle=C.g;c.fillText('Máximo más alto',a.X(i2)-120,a.y(pr[i2])-14);c.fillStyle=C.r;c.fillText('Máximo más bajo',b.X(i2)-120,b.y(cd[i2])-14);}
+      if(sc==='absorcion'){const i2=Math.round(N*.78);c.strokeStyle=C.y;c.setLineDash([]);c.strokeRect(x0+4,22,a.X(i2)-x0,mid-36);c.strokeRect(x0+4,mid+22,b.X(i2)-x0,h-mid-36);c.fillStyle=C.y;c.font='700 12px Montserrat';c.fillText('Precio aguanta',x0+12,40);c.fillText('Ventas agresivas sin parar',x0+12,mid+40);}
+      if(sc==='confirma'){c.setLineDash([]);c.fillStyle=C.g;c.font='700 12px Montserrat';c.fillText('Ambos suben ✓',x1-110,40);}
+      c.setLineDash([]);}
+  }
+  document.querySelectorAll('[data-cs]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-cs]').forEach(x=>x.classList.remove('on'));b.classList.add('on');sc=b.dataset.cs;gen();});
+  gen();watch(cv,v=>on=v);setInterval(()=>{if(!on)return;if(shown<N){shown+=2;if(shown>=N){shown=N;msg.innerHTML=TX[sc];}draw();}else{hold++;if(hold>110)gen();}},40);draw();addEventListener('resize',draw);
+})();
+
+/* navegación: barra de lectura y "siguiente fase" */
+(function(){const ph=[...document.querySelectorAll('section.phase[data-title]')];ph.forEach((s,i)=>{const n=ph[i+1];const d=document.createElement('div');d.className='next';d.innerHTML=n?'<a href="#'+n.id+'">Siguiente: <span>Fase '+(i+1)+' · '+n.dataset.title+'</span> →</a>':'<a href="#como-ensenar">Ver resumen del curso <span>→</span></a>';s.appendChild(d);});
+const f=document.getElementById('snfill');addEventListener('scroll',()=>{const h=document.documentElement;f.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});})();
+</script>
+</body>
+</html>
