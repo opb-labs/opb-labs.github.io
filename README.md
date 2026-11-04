@@ -11,7 +11,8 @@ Curso gratuito para aprender trading de futuros del Nasdaq (NQ) y del S&P 500 (E
 | `curso.html` | Las 10 fases, con animaciones y checklists |
 | `herramientas.html` | Productos OPB Labs (próximamente) |
 | `documentacion.html` | Requisitos, instalación, manuales y preguntas frecuentes |
-| `assets/site.js` | Menú superior y pie de TODAS las páginas: para cambiarlos, edita solo este archivo |
+| `en/` | Versión en inglés: index, learn, tools, docs, legal, privacy (el curso completo sigue solo en español) |
+| `assets/site.js` | Menú superior y pie de TODAS las páginas: para cambiarlos, edita solo este archivo (textos en español e inglés y selector ES/EN) |
 | `aviso-legal.html`, `privacidad.html` | Textos legales |
 | `assets/logo.svg` | Logo de OPB Labs (también se usa como icono de la pestaña) |
 | `.nojekyll` | Le dice a GitHub Pages que publique los archivos tal cual |
