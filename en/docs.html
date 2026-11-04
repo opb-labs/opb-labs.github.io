@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Docs · OPB Labs</title>
+<meta name="description" content="Documentation for OPB Labs tools for NinjaTrader 8: requirements, installation, user manuals and FAQ.">
+<link rel="alternate" hreflang="es" href="https://opb-labs.com/documentacion">
+<link rel="alternate" hreflang="en" href="https://opb-labs.com/en/docs">
+<link rel="alternate" hreflang="x-default" href="https://opb-labs.com/documentacion">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{--bg:#0B0B0C;--panel:#131417;--panel2:#1a1c20;--line:#26292f;--acc:#1496BE;--w:#F2F2F2;--t2:#BEC2C8;--t3:#787C82;--g:#4CD964}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--w);font-family:Montserrat,system-ui,sans-serif;font-weight:500;line-height:1.7;font-size:16.5px}
+a{color:var(--acc)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.kicker{color:var(--acc);font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+h1{font-weight:800;font-size:clamp(32px,5vw,48px);line-height:1.1;margin:10px 0 12px}
+h2{font-weight:800;font-size:clamp(24px,3vw,30px);margin:0 0 8px}
+h3{font-size:18px;margin:0 0 6px}
+p,li{color:var(--t2)}
+.sub{font-size:18px;max-width:640px}
+.doc{display:grid;grid-template-columns:230px 1fr;gap:50px;padding:56px 22px 30px}
+.toc{position:sticky;top:96px;align-self:start}
+.toc b{display:block;color:var(--t3);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.toc a{display:block;color:var(--t2);text-decoration:none;font-weight:600;font-size:14.5px;padding:6px 0 6px 12px;border-left:2px solid var(--line)}
+.toc a:hover{color:var(--w);border-color:var(--acc)}
+section{padding:0 0 56px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:16px 0}
+.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 42px}
+.steps li:before{content:counter(s);position:absolute;left:0;top:6px;width:28px;height:28px;border-radius:50%;background:var(--acc);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+kbd{font-family:"JetBrains Mono",monospace;font-size:13.5px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:1px 7px;color:var(--w)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card p{font-size:15px;margin:0 0 12px}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);border:1px solid var(--line);padding:3px 10px;border-radius:999px;margin-bottom:12px}
+.status:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.card a{font-weight:700;text-decoration:none;font-size:14.5px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 20px;margin:10px 0}
+details[open]{border-color:#34404a}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}summary:after{content:"+";color:var(--acc);font-size:22px;line-height:1}
+details[open] summary:after{content:"−"}
+details p{margin:10px 0 0}
+@media(max-width:860px){.doc{grid-template-columns:1fr;gap:24px}.toc{position:static}.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script src="../assets/site.js" data-part="nav"></script>
+<div class="wrap doc">
+  <aside class="toc">
+    <b>On this page</b>
+    <a href="#instalacion">Getting started</a>
+    <a href="#manuales">Manuals</a>
+    <a href="#faq">FAQ</a>
+  </aside>
+
+  <main>
+    <span class="kicker">Docs</span>
+    <h1>OPB Labs tool guides</h1>
+    <p class="sub">Requirements, installation and user manuals. Each guide will be completed when its tool becomes available.</p>
+
+    <section id="instalacion" style="margin-top:40px">
+      <h2>Getting started</h2>
+      <div class="box">
+        <h3>Requirements</h3>
+        <ul>
+          <li>NinjaTrader 8 installed on Windows.</li>
+          <li>Market data with book depth (Level 2) for the order flow tools.</li>
+          <li>Designed and tested on NQ, MNQ and ES futures.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Installing an AddOn in NinjaTrader 8</h3>
+        <p>This is NinjaTrader's general procedure for importing add-ons. Tool-specific details will be in each manual.</p>
+        <ol class="steps">
+          <li>Download the tool's <kbd>.zip</kbd> file. Do not unzip it.</li>
+          <li>In the NinjaTrader Control Center, open <kbd>Tools</kbd> → <kbd>Import</kbd> → <kbd>NinjaScript Add-On…</kbd></li>
+          <li>Select the <kbd>.zip</kbd> file and confirm the import.</li>
+          <li>If NinjaTrader asks, restart it so the tool appears in its menus.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="manuales">
+      <h2>Manuals</h2>
+      <p>Features, settings and usage examples for each tool.</p>
+      <div class="cards">
+        <div class="card"><span class="status">In preparation</span><h3>OPB DOM</h3><p>Columns, session profile, P/S, absorption detector, alerts and trading with ATM.</p><a href="tools.html#dom">What it does →</a></div>
+        <div class="card"><span class="status">In preparation</span><h3>OPB Limitador</h3><p>Daily limits, drawdown, max contracts, prop firm profiles and locking.</p><a href="tools.html#limitador">What it does →</a></div>
+        <div class="card"><span class="status">In preparation</span><h3>OPB Sticker</h3><p>Styles, editing, images and how to use it in reviews and videos.</p><a href="tools.html#sticker">What it does →</a></div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ</h2>
+      <details><summary>Do they work on platforms other than NinjaTrader 8?</summary><p>No. They are AddOns and indicators written for NinjaTrader 8.</p></details>
+      <details><summary>Do they give buy or sell signals?</summary><p>No. They are tools for visualisation, execution and risk control. Trading decisions are always yours.</p></details>
+      <details><summary>When will they be available?</summary><p>They are not for sale yet. Write to <a href="mailto:contacto@opb-labs.com">contacto@opb-labs.com</a> and I will let you know when they are.</p></details>
+      <details><summary>Where can I see them working?</summary><p>In the sessions on the YouTube channel <a href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">@opb_labs</a> (videos in Spanish).</p></details>
+      <details><summary>How do I get support?</summary><p>By email at <a href="mailto:contacto@opb-labs.com">contacto@opb-labs.com</a>, in English or Spanish.</p></details>
+    </section>
+  </main>
+</div>
+
+<script src="../assets/site.js" data-part="footer"></script>
+</body>
+</html>

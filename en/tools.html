@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tools for NinjaTrader 8 · OPB Labs</title>
+<meta name="description" content="OPB DOM, OPB Limitador y OPB Sticker: herramientas de order flow y gestión de riesgo para NinjaTrader 8 desarrolladas por OPB Labs.">
+<meta property="og:title" content="Herramientas para NinjaTrader 8 · OPB Labs">
+<meta property="og:description" content="Order flow y control de riesgo para operar futuros, hechos por un trader.">
+<link rel="alternate" hreflang="es" href="https://opb-labs.com/herramientas">
+<link rel="alternate" hreflang="en" href="https://opb-labs.com/en/tools">
+<link rel="alternate" hreflang="x-default" href="https://opb-labs.com/herramientas">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{--bg:#0B0B0C;--panel:#131417;--panel2:#1a1c20;--line:#26292f;--acc:#1496BE;--w:#F2F2F2;--t2:#BEC2C8;--t3:#787C82;--g:#4CD964;--r:#FF5252;--y:#FFE14D}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--w);font-family:Montserrat,system-ui,sans-serif;font-weight:500;line-height:1.6;font-size:17px}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.topbar{height:6px;background:var(--acc)}
+nav{position:sticky;top:0;z-index:50;background:rgba(11,11,12,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;letter-spacing:.06em}.brand b{color:var(--acc)}
+.links a{color:var(--t2);text-decoration:none;font-weight:600;font-size:14px;margin-left:22px}.links a:hover,.links a.act{color:var(--w)}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--w);transition:.2s;cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--acc);transform:translateY(-2px)}
+.btn.main{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 10px 30px -10px rgba(20,150,190,.7)}
+.kicker{display:inline-block;color:var(--acc);font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+h1{font-weight:800;font-size:clamp(34px,5.4vw,58px);line-height:1.05;letter-spacing:-.02em;margin:14px 0 18px}
+h1 em{font-style:normal;color:var(--acc)}
+h2{font-weight:800;font-size:clamp(26px,3.6vw,38px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 14px}
+.sub{color:var(--t2);font-size:19px;max-width:580px}
+section{padding:80px 0;border-top:1px solid var(--line)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center;padding:70px 22px 64px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:28px;color:var(--t3);font-size:14px;font-weight:600}
+.trust span:before{content:"✓ ";color:var(--g)}
+.shot{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#000;box-shadow:0 30px 80px -30px rgba(20,150,190,.35);max-width:520px;justify-self:end;width:100%}
+.shot .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#C8361F;color:#fff;font-weight:700;font-size:13px}
+.shot .bar i{font-style:normal;font-family:"JetBrains Mono",monospace;font-weight:500;font-size:11px;opacity:.85}
+.shot img{display:block;width:100%;height:auto}
+.shot .cap{font-size:13px;color:var(--t3);padding:10px 14px;background:var(--panel);border-top:1px solid var(--line)}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+.status:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.product{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;padding:38px 0;border-bottom:1px solid var(--line)}
+.product:last-child{border-bottom:0;padding-bottom:0}
+.product h3{font-size:28px;font-weight:800;margin:14px 0 0;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.product h3 small{font-size:13px;font-weight:600;color:var(--t3);letter-spacing:.04em}
+.what{color:var(--t2);margin:12px 0 0;max-width:40em}
+.feat{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px}
+.feat li{display:grid;grid-template-columns:16px 1fr;gap:12px}
+.feat li:before{content:"";width:10px;height:10px;margin-top:9px;background:var(--acc);border-radius:2px}
+.feat span{color:var(--t2)}
+.side{display:grid;gap:14px;align-content:start}
+.mini{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.cols{display:flex;flex-wrap:wrap;gap:6px;font-family:"JetBrains Mono",monospace;font-size:12px}
+.cols b{font-weight:600;border:1px solid var(--line);background:var(--panel);padding:5px 9px;border-radius:6px;color:var(--t2)}
+.cols b.k{color:var(--acc);border-color:rgba(20,150,190,.45)}
+.lim{display:flex;gap:16px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.lim img{width:150px;border-radius:8px;flex:none}
+.lim p{margin:0;font-size:14px;color:var(--t2)}
+.stickers{display:flex;flex-wrap:wrap;gap:8px}
+.stk{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);color:var(--t2)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px}
+.card h3{margin:6px 0 6px;font-size:19px;font-weight:700}.card p{margin:0;color:var(--t2);font-size:15.5px}
+.contact{background:linear-gradient(135deg,rgba(20,150,190,.18),rgba(20,150,190,.03));border:1px solid rgba(20,150,190,.35);border-radius:22px;padding:44px 30px;text-align:center}
+.mail{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.mail code{font-family:"JetBrains Mono",monospace;font-size:17px;background:var(--bg);border:1px solid var(--line);padding:12px 16px;border-radius:10px;user-select:all}
+.ok{min-height:1.4em;color:var(--g);font-size:14px;margin-top:10px}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--t3);font-size:13.5px}
+footer a{color:var(--t2)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+@media(max-width:860px){.hero,.product{grid-template-columns:1fr}.shot{justify-self:start}.grid3{grid-template-columns:1fr}.links a:not(.yt):not(.act){display:none}}
+@media(max-width:520px){.lim{flex-direction:column}section{padding:56px 0}}
+</style>
+</head>
+<body>
+<script src="../assets/site.js" data-part="nav"></script>
+<header class="wrap hero">
+  <div>
+    <span class="kicker">Tools · NinjaTrader 8</span>
+    <h1>Order flow and risk control, <em>built by a trader</em></h1>
+    <p class="sub">The tools I use every day to trade NQ, MNQ and ES: an order flow DOM, a risk limiter for prop firm accounts and chart utilities. They are all tested first in real sessions that I publish on YouTube.</p>
+    <div class="cta"><a class="btn main" href="#productos">See the tools</a><a class="btn" href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">▶ See them in use</a></div>
+    <div class="trust"><span>NinjaTrader 8</span><span>NQ · MNQ · ES</span><span>English and Spanish</span></div>
+  </div>
+  <figure class="shot" style="margin:0">
+    <div class="bar">OPB DOM — ES 12-26 <i>Ticks: 4 · RTH</i></div>
+    <img src="../assets/opb-dom.jpg" alt="Screenshot of OPB DOM on ES with volume profile, price, P/S, bid and ask book, traded volume and delta per level" width="638" height="598">
+    <figcaption class="cap">Real screenshot of OPB DOM during an ES RTH session.</figcaption>
+  </figure>
+</header>
+
+<section id="productos"><div class="wrap">
+  <span class="kicker">Products</span>
+  <h2>Three tools, one workflow</h2>
+  <p class="sub">They are not for sale yet. If you are interested in any of them, write to me and I will let you know when they are available.</p>
+
+  <article class="product" id="dom">
+    <div>
+      <span class="status">Coming soon</span>
+      <h3>OPB DOM <small>Order flow AddOn</small></h3>
+      <p class="what">A price ladder that brings together, in a single window, the order book, what trades at each level and how liquidity changes, so you can read who is pushing and who is defending before you enter.</p>
+      <ul class="feat">
+        <li><div>Level 2 book, market volume <span>(@Bid / @Ask)</span>, delta per level and session volume profile with POC, VAH and VAL.</div></li>
+        <li><div>P/S column <span>(pull / stack)</span>: liquidity added or removed without trading, checked against real book recordings of NQ, MNQ and ES.</div></li>
+        <li><div>Absorption and pull-on-touch detector, marked on the price, with sensitivity that adapts to each instrument.</div></li>
+        <li><div>Alerts for walls, aggression, pulls and stacks near price, as text or sound.</div></li>
+        <li><div>Key RTH and ETH levels, trading from the DOM with ATM strategies and profiles saved per instrument.</div></li>
+      </ul>
+    </div>
+    <div class="side">
+      <p class="mini">Configurable columns</p>
+      <div class="cols"><b>VP</b><b>Price</b><b>Orders</b><b class="k">P/S</b><b>Bid</b><b>@Bid</b><b>@Ask</b><b>Ask</b><b class="k">Delta</b><b>PnL</b><b>Bid P</b><b>Ask P</b></div>
+      <p class="mini" style="margin-top:6px">Signal on price</p>
+      <div class="cols"><b class="k">A · absorption</b><b>P · pull on touch</b></div>
+    </div>
+  </article>
+
+  <article class="product" id="limitador">
+    <div>
+      <span class="status">Coming soon</span>
+      <h3>OPB Limitador <small>Risk management AddOn</small></h3>
+      <p class="what">Designed for evaluation and funded accounts: set your limits before you start and, if you hit them, the account stays locked until the session closes, even if you restart NinjaTrader.</p>
+      <ul class="feat">
+        <li><div>Maximum daily loss per account and per instrument <span>(NQ, MNQ or global)</span>, with a safety buffer.</div></li>
+        <li><div>Drawdown protection and maximum contracts in mini equivalents, with a scaling ladder based on accumulated profit.</div></li>
+        <li><div>Profiles per prop firm and mandatory mode: without activating the limiter that day, no positions can be opened.</div></li>
+      </ul>
+    </div>
+    <div class="side">
+      <div class="lim">
+        <img src="../assets/opb-limitador.png" alt="OPB Limitador panel with the account locked after exceeding the daily limit" width="170" height="270">
+        <p>This is what it looks like when the daily limit is hit: the account is locked and the panel shows how long until it unlocks and how much drawdown margin is left.</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="product" id="sticker">
+    <div>
+      <span class="status">Coming soon</span>
+      <h3>OPB Sticker <small>Drawing tool</small></h3>
+      <p class="what">Notes and labels on the chart to mark what you see while trading or to prepare your reviews and videos.</p>
+      <ul class="feat">
+        <li><div>Shape, icon, colours, editable text and optional image <span>(PNG or JPG)</span>.</div></li>
+        <li><div>Double-click to edit; resize by dragging the corner and the text adjusts itself.</div></li>
+      </ul>
+    </div>
+    <div class="side">
+      <p class="mini">Included styles</p>
+      <div class="stickers"><span class="stk">Absorption</span><span class="stk">Sweep</span><span class="stk">Liquidity</span><span class="stk">Long entry</span><span class="stk">Short entry</span><span class="stk">Exit</span><span class="stk">Stop</span><span class="stk">Level</span><span class="stk">Note</span><span class="stk">Alert</span></div>
+    </div>
+  </article>
+</div></section>
+
+<section id="laboratorio"><div class="wrap">
+  <span class="kicker">In the lab</span>
+  <h2>Indicators in development</h2>
+  <p class="sub">You can see them in the channel's sessions; they will be released when finished.</p>
+  <div class="grid3">
+    <div class="card"><span class="mini">Indicator</span><h3>OPB FlowPanel</h3><p>DOM profile, recent volume and session profile in one panel, with total CVD and large-trade CVD.</p></div>
+    <div class="card"><span class="mini">Indicator</span><h3>OPB CVD</h3><p>Cumulative delta as candles below the chart, to see whether the flow is following price.</p></div>
+    <div class="card"><span class="mini">Indicator</span><h3>OPB GEX</h3><p>The day's gamma regime (positive, range; negative, trend) alongside 0DTE GEX levels.</p></div>
+  </div>
+</div></section>
+
+<section id="contacto"><div class="wrap">
+  <div class="contact">
+    <span class="kicker">Contact</span>
+    <h2>Interested in any of the tools?</h2>
+    <p class="sub" style="margin:0 auto">Write to me for information, support or to be notified when they are available. I answer in English and Spanish.</p>
+    <div class="mail"><code id="mail">contacto@opb-labs.com</code><button class="btn" id="copy" type="button">Copy</button></div>
+    <p class="ok" id="ok" aria-live="polite"></p>
+  </div>
+</div></section>
+
+<script src="../assets/site.js" data-part="footer"></script>
+<script>
+document.getElementById('copy').addEventListener('click',function(){
+  var t=document.getElementById('mail').textContent.trim(),ok=document.getElementById('ok');
+  function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('mail'));var s=getSelection();s.removeAllRanges();s.addRange(r);ok.textContent='Selected: press Ctrl+C to copy it.';}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){ok.textContent='Copied: '+t;},sel);}else sel();
+});
+</script>
+</body>
+</html>

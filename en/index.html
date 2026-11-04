@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OPB Labs · Order flow for futures: course, tools and live trading</title>
+<meta name="description" content="OPB Labs: a free order flow course from zero, tools for NinjaTrader 8 and real trading sessions on YouTube for NQ, MNQ and ES futures.">
+<meta property="og:title" content="OPB Labs · Order flow for futures">
+<meta property="og:description" content="Learn to read the market from the inside, trade with tools built by a trader and watch them in use on YouTube.">
+<link rel="alternate" hreflang="es" href="https://opb-labs.com/">
+<link rel="alternate" hreflang="en" href="https://opb-labs.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://opb-labs.com/">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/fonts.css">
+<style>
+:root{--bg:#0B0B0C;--panel:#131417;--panel2:#1a1c20;--line:#26292f;--acc:#1496BE;--w:#F2F2F2;--t2:#BEC2C8;--t3:#787C82;--g:#4CD964;--r:#FF5252;--y:#FFE14D}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--w);font-family:Montserrat,system-ui,sans-serif;font-weight:500;line-height:1.6;font-size:17px}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.topbar{height:6px;background:var(--acc)}
+nav{position:sticky;top:0;z-index:50;background:rgba(11,11,12,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;letter-spacing:.06em}.brand b{color:var(--acc)}
+.links a{color:var(--t2);text-decoration:none;font-weight:600;font-size:14px;margin-left:22px}.links a:hover{color:var(--w)}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--w);font-family:inherit;cursor:pointer;transition:.2s}
+.btn:hover{border-color:var(--acc);transform:translateY(-2px)}
+.btn.main{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 10px 30px -10px rgba(20,150,190,.7)}
+.kicker{display:inline-block;color:var(--acc);font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+h1{font-weight:800;font-size:clamp(36px,6vw,62px);line-height:1.04;letter-spacing:-.02em;margin:14px 0 18px}
+h1 em{font-style:normal;color:var(--acc)}
+h2{font-weight:800;font-size:clamp(26px,3.6vw,38px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 14px}
+.sub{color:var(--t2);font-size:19px;max-width:580px}
+section{padding:80px 0}section.wrap{padding:72px 22px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:70px 22px 40px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:28px;color:var(--t3);font-size:14px;font-weight:600}
+.trust span:before{content:"✓ ";color:var(--g)}
+.screen{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 30px 80px -30px rgba(20,150,190,.35)}
+.screen-top{display:flex;gap:6px;margin-bottom:12px}.screen-top i{width:10px;height:10px;border-radius:50%;background:#2a2d33}
+.screen-label{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.12em;color:var(--t3);font-weight:700;margin-bottom:8px}
+#ladder{width:100%;height:330px;display:block}
+.screen-cap{font-size:13px;color:var(--t2);margin-top:10px}.screen-cap b{color:var(--w)}
+/* tres pilares */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px}
+.pillar{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;text-decoration:none;transition:.2s}
+.pillar:hover{border-color:var(--acc);transform:translateY(-3px)}
+.pillar .tag{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.pillar h3{margin:12px 0 8px;font-size:23px;font-weight:800}
+.pillar p{margin:0 0 18px;color:var(--t2);font-size:15.5px;flex:1}
+.pillar .go{color:var(--acc);font-weight:700;font-size:15px}
+.ico{width:46px;height:46px;border-radius:12px;background:rgba(20,150,190,.12);display:grid;place-items:center;margin-bottom:14px}
+/* curso */
+.blocks{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.blk{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.blk .l{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--acc);color:var(--acc);font-weight:800;margin-bottom:10px}
+.blk b{display:block;font-size:17px}.blk span{display:block;color:var(--t3);font-size:14px;line-height:1.45;margin-top:4px}
+/* herramientas */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+.shot{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#000;box-shadow:0 30px 80px -30px rgba(20,150,190,.35);margin:0}
+.shot .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:#C8361F;color:#fff;font-weight:700;font-size:13px}
+.shot .bar i{font-style:normal;font-family:"JetBrains Mono",monospace;font-weight:500;font-size:11px;opacity:.85}
+.shot img{display:block;width:100%;height:auto}
+.prods{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px}
+.prods li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+.prods b{font-size:17px}.prods span{display:block;color:var(--t2);font-size:14.5px;margin-top:2px}
+.status{display:inline-flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--t2);border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+.status:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc)}
+/* canal */
+.yt{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:40px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+.yt ul{list-style:none;padding:0;margin:0}.yt li{padding:7px 0;color:var(--t2);display:flex;gap:10px}
+.yt li:before{content:"▶";color:var(--r);font-size:12px;line-height:2.1}
+/* contacto */
+.contact{background:linear-gradient(135deg,rgba(20,150,190,.18),rgba(20,150,190,.03));border:1px solid rgba(20,150,190,.35);border-radius:22px;padding:44px 30px;text-align:center}
+.mail{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.mail code{font-family:"JetBrains Mono",monospace;font-size:17px;background:var(--bg);border:1px solid var(--line);padding:12px 16px;border-radius:10px;user-select:all}
+.ok{color:var(--g);font-size:14px;min-height:22px;margin:10px 0 0}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--t3);font-size:13.5px}
+footer a{color:var(--t2)}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s,transform .7s}.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+@media(max-width:860px){.hero,.split,.yt{grid-template-columns:1fr}.pillars{grid-template-columns:1fr}.blocks{grid-template-columns:1fr 1fr}.links a:not(.ytl){display:none}.yt{padding:28px}}
+@media(max-width:480px){.blocks{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script src="../assets/site.js" data-part="nav"></script>
+<header class="wrap hero">
+  <div>
+    <span class="kicker">Order flow · NQ, MNQ and ES futures</span>
+    <h1>Read the market <em>from the inside</em> and trade with control</h1>
+    <p class="sub">OPB Labs brings together three things: a free course to learn order flow from zero, NinjaTrader 8 tools built by a trader, and real trading sessions on YouTube where you can see them in use.</p>
+    <div class="cta">
+      <a class="btn main" href="learn.html">Start the free course →</a>
+      <a class="btn" href="tools.html">See the tools</a>
+    </div>
+    <div class="trust"><span>No sign-up</span><span>NinjaTrader 8</span><span>Videos in Spanish</span></div>
+  </div>
+  <div class="screen" aria-hidden="true">
+    <div class="screen-top"><i></i><i></i><i></i></div>
+    <div class="screen-label"><span style="color:#4CD964">BUYERS</span><span>PRICE</span><span style="color:#FF5252">SELLERS</span></div>
+    <canvas id="ladder"></canvas>
+    <div class="screen-cap">A live <b>order book</b>: what you learn to read in the course and what the tools show you.</div>
+  </div>
+</header>
+
+<section class="wrap reveal" style="padding-top:30px">
+  <div class="pillars">
+    <a class="pillar" href="learn.html">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1496BE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l10-5 10 5-10 5z"/><path d="M6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
+      <span class="tag">Learn · Free</span>
+      <h3>From Zero to Order Flow</h3>
+      <p>Ten phases to go from knowing nothing to reading the DOM, the footprint and delta. With animations you can play with and a checklist at the end of each phase.</p>
+      <span class="go">See the course →</span>
+    </a>
+    <a class="pillar" href="tools.html">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1496BE" stroke-width="2" stroke-linecap="round"><path d="M4 6h7M4 10h10M4 14h5M4 18h8"/><path d="M15 6h5M17 10h3M14 14h6M16 18h4"/></svg></div>
+      <span class="tag">Trade · Coming soon</span>
+      <h3>NT8 tools</h3>
+      <p>OPB DOM to read order flow, OPB Limitador to protect prop firm accounts and OPB Sticker to mark up the chart.</p>
+      <span class="go">See the tools →</span>
+    </a>
+    <a class="pillar" href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1496BE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/></svg></div>
+      <span class="tag">Watch · YouTube</span>
+      <h3>Real trading</h3>
+      <p>NQ, MNQ and ES sessions explained through order flow, with the tools running live before they are released.</p>
+      <span class="go">Go to the channel →</span>
+    </a>
+  </div>
+</section>
+
+<section class="wrap reveal" id="curso">
+  <span class="kicker">The course</span>
+  <h2>Understand why price moves, not just that it moves</h2>
+  <p class="sub">Free, no sign-up, at your own pace. Your progress is saved in your browser. The full lessons are currently in Spanish.</p>
+  <div class="blocks">
+    <div class="blk"><span class="l">A</span><b>Understand the market</b><span>What trading is, the auction, and NQ and ES futures.</span></div>
+    <div class="blk"><span class="l">B</span><b>Read and protect yourself</b><span>Charts, risk management and a platform in simulation.</span></div>
+    <div class="blk"><span class="l">C</span><b>Volume and order flow</b><span>Volume profile, DOM, tape, footprint and CVD.</span></div>
+    <div class="blk"><span class="l">D</span><b>Practise with a method</b><span>A written plan, the simulator and going live with micros.</span></div>
+  </div>
+  <div class="cta"><a class="btn main" href="learn.html">About the course →</a><a class="btn" href="../curso.html#fase-0" hreflang="es">Phase 0 (Spanish)</a></div>
+</section>
+
+<section class="wrap reveal" id="herramientas">
+  <div class="split">
+    <div>
+      <span class="kicker">Tools · NinjaTrader 8</span>
+      <h2>The tools I use every day, built for the job</h2>
+      <p class="sub">They are not for sale yet. If you are interested in any of them, write to me and I will let you know when they are available.</p>
+      <span class="status">Coming soon</span>
+      <ul class="prods">
+        <li><b>OPB DOM</b><span>Level 2 book, @Bid/@Ask volume, delta, session profile and absorption detector on a single ladder.</span></li>
+        <li><b>OPB Limitador</b><span>Daily loss, drawdown and max contracts; if a limit is hit, the account is locked until the close.</span></li>
+        <li><b>OPB Sticker</b><span>Notes and labels on the chart: absorption, sweep, liquidity, entries, stops…</span></li>
+      </ul>
+      <div class="cta"><a class="btn" href="tools.html">See all the details →</a></div>
+    </div>
+    <figure class="shot">
+      <div class="bar">OPB DOM — ES 12-26 <i>Ticks: 4 · RTH</i></div>
+      <img src="../assets/opb-dom.jpg" alt="Screenshot of OPB DOM on ES with volume profile, bid and ask book, traded volume and delta per level" width="638" height="598">
+    </figure>
+  </div>
+</section>
+
+<section class="wrap reveal" id="canal">
+  <div class="yt">
+    <div>
+      <span class="kicker">The channel</span>
+      <h2>See it in action on YouTube</h2>
+      <p class="sub">What the course teaches, applied in real sessions. Videos are in Spanish.</p>
+      <ul>
+        <li>NQ, MNQ and ES sessions read through order flow.</li>
+        <li>OPB Labs tools running live.</li>
+        <li>Session reviews: what was seen, what was done and why.</li>
+      </ul>
+    </div>
+    <div style="text-align:center">
+      <a class="btn main" href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">▶ Go to @opb_labs</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="contacto">
+  <div class="contact">
+    <span class="kicker">Contact</span>
+    <h2>Questions about the course or the tools?</h2>
+    <p class="sub" style="margin:0 auto">Write to me. I answer in English and Spanish.</p>
+    <div class="mail"><code id="mail">contacto@opb-labs.com</code><button class="btn" id="copy" type="button">Copy</button></div>
+    <p class="ok" id="ok" aria-live="polite"></p>
+  </div>
+</section>
+
+<script src="../assets/site.js" data-part="footer"></script>
+
+<script>
+/* libro de órdenes animado */
+(function(){
+  const cv=document.getElementById('ladder');const rows=11;let price=21000,bids=[],asks=[],flash=-1,ft=0,dir=0;
+  for(let i=0;i<rows;i++){bids.push(10+Math.random()*40);asks.push(10+Math.random()*40);}
+  function draw(){const dpr=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(cv.width!==w*dpr){cv.width=w*dpr;cv.height=h*dpr;}
+    const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    const rh=h/rows,mid=Math.floor(rows/2),pw=Math.min(120,w*.3),side=(w-pw)/2-6,mx=60;
+    for(let i=0;i<rows;i++){const y=i*rh,p=price+(mid-i)*0.25;
+      c.fillStyle=i===mid?'#1496BE':'#15171a';c.fillRect(side+3,y+2,pw,rh-4);
+      c.fillStyle=i===mid?'#fff':'#BEC2C8';c.font=(i===mid?'600 ':'500 ')+'13px JetBrains Mono';c.textAlign='center';
+      c.fillText(p.toLocaleString('es-ES',{minimumFractionDigits:2}),side+3+pw/2,y+rh/2+4);
+      if(i>mid){const bw=side*Math.min(1,bids[i]/mx);c.fillStyle='rgba(76,217,100,'+(i===flash&&dir<0?.75:.3)+')';c.fillRect(side-bw,y+3,bw,rh-6);c.fillStyle='#4CD964';c.textAlign='right';c.fillText(Math.round(bids[i]),side-8,y+rh/2+4);}
+      if(i<mid){const aw=side*Math.min(1,asks[i]/mx);c.fillStyle='rgba(255,82,82,'+(i===flash&&dir>0?.75:.3)+')';c.fillRect(w-side,y+3,aw,rh-6);c.fillStyle='#FF5252';c.textAlign='left';c.fillText(Math.round(asks[i]),w-side+8,y+rh/2+4);}
+    }c.textAlign='left';}
+  function step(){for(let i=0;i<rows;i++){bids[i]=Math.max(3,bids[i]+(Math.random()-.5)*6);asks[i]=Math.max(3,asks[i]+(Math.random()-.5)*6);}
+    const mid=Math.floor(rows/2);ft++;
+    if(ft%6===0){dir=Math.random()<.5?1:-1;if(dir>0){asks[mid-1]-=18;flash=mid-1;if(asks[mid-1]<4){price+=.25;asks.shift();asks.push(10+Math.random()*40);bids.shift();bids.push(10+Math.random()*40);}}
+      else{bids[mid+1]-=18;flash=mid+1;if(bids[mid+1]<4){price-=.25;asks.unshift(10+Math.random()*40);asks.pop();bids.unshift(10+Math.random()*40);bids.pop();}}}
+    else flash=-1;draw();}
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;draw();if(!reduce)setInterval(step,260);addEventListener('resize',draw);
+})();
+/* copiar correo */
+document.getElementById('copy').addEventListener('click',function(){
+  var t=document.getElementById('mail').textContent.trim(),ok=document.getElementById('ok');
+  function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('mail'));var s=getSelection();s.removeAllRanges();s.addRange(r);ok.textContent='Selected: press Ctrl+C to copy it.';}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){ok.textContent='Copied: '+t;},sel);}else sel();
+});
+/* aparición suave de secciones */
+(function(){const els=document.querySelectorAll('.reveal');if(!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('in'));return;}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});els.forEach(e=>io.observe(e));})();
+</script>
+</body>
+</html>
