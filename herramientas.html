@@ -74,11 +74,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset
 </style>
 </head>
 <body>
-<div class="topbar"></div>
-<nav><div class="wrap">
-  <a href="index.html" class="brand"><img src="assets/logo.svg" alt="" width="30" height="30">OPB <b>LABS</b></a>
-  <div class="links"><a href="index.html">Curso</a><a href="herramientas.html" class="act">Herramientas</a><a href="#contacto">Contacto</a><a class="yt" href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">YouTube</a></div>
-</div></nav>
+<script src="assets/site.js" data-part="nav"></script>
 
 <header class="wrap hero">
   <div>
@@ -100,7 +96,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset
   <h2>Tres herramientas, un mismo flujo de trabajo</h2>
   <p class="sub">Todavía no están a la venta. Si te interesa alguna, escríbeme y te aviso cuando esté disponible.</p>
 
-  <article class="product">
+  <article class="product" id="dom">
     <div>
       <span class="status">Próximamente</span>
       <h3>OPB DOM <small>AddOn de order flow</small></h3>
@@ -121,7 +117,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset
     </div>
   </article>
 
-  <article class="product">
+  <article class="product" id="limitador">
     <div>
       <span class="status">Próximamente</span>
       <h3>OPB Limitador <small>AddOn de gestión de riesgo</small></h3>
@@ -140,7 +136,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset
     </div>
   </article>
 
-  <article class="product">
+  <article class="product" id="sticker">
     <div>
       <span class="status">Próximamente</span>
       <h3>OPB Sticker <small>Herramienta de dibujo</small></h3>
@@ -178,11 +174,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset
   </div>
 </div></section>
 
-<footer><div class="wrap">
-  <p><b style="color:#BEC2C8">Aviso de riesgo:</b> operar futuros conlleva un riesgo elevado de pérdidas. Las herramientas de OPB Labs son de visualización, ejecución y control de riesgo: no dan señales ni constituyen asesoramiento financiero. Los resultados pasados no garantizan resultados futuros.</p>
-  <p>NinjaTrader es una marca registrada de NinjaTrader, LLC. OPB Labs no está afiliado ni respaldado por NinjaTrader, LLC.</p>
-  <p>OPB Tech &amp; Trading Labs · <a href="mailto:contacto@opb-labs.com">contacto@opb-labs.com</a> · <a href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">youtube.com/@opb_labs</a> · <a href="aviso-legal.html">Aviso legal</a> · <a href="privacidad.html">Privacidad</a></p>
-</div></footer>
+<script src="assets/site.js" data-part="footer"></script>
 <script>
 document.getElementById('copy').addEventListener('click',function(){
   var t=document.getElementById('mail').textContent.trim(),ok=document.getElementById('ok');

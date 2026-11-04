@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>De cero a Orderflow · Curso gratuito · OPB Labs</title>
+<meta name="description" content="Curso gratuito para aprender trading de futuros del Nasdaq y S&P 500 desde cero hasta orderflow, con animaciones interactivas.">
+<meta property="og:title" content="De cero a Orderflow · Curso gratuito">
+<meta property="og:description" content="Aprende a leer el mercado por dentro: de no saber nada a usar DOM, footprint y CVD en los futuros NQ y ES.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+:root{--bg:#0B0B0C;--panel:#131417;--panel2:#1a1c20;--line:#26292f;--acc:#1496BE;--w:#F2F2F2;--t2:#BEC2C8;--t3:#787C82;--g:#4CD964;--r:#FF5252;--y:#FFE14D}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--w);font-family:Montserrat,system-ui,sans-serif;font-weight:500;line-height:1.6;font-size:17px}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.topbar{height:6px;background:var(--acc)}
+nav{position:sticky;top:0;z-index:50;background:rgba(11,11,12,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;letter-spacing:.06em}.brand b{color:var(--acc)}
+.links a{color:var(--t2);text-decoration:none;font-weight:600;font-size:14px;margin-left:22px}.links a:hover{color:var(--w)}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);transition:.2s}
+.btn:hover{border-color:var(--acc);transform:translateY(-2px)}
+.btn.main{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 10px 30px -10px rgba(20,150,190,.7)}
+.kicker{display:inline-block;color:var(--acc);font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+h1{font-weight:800;font-size:clamp(36px,6vw,64px);line-height:1.04;letter-spacing:-.02em;margin:14px 0 18px}
+h1 em{font-style:normal;color:var(--acc)}
+h2{font-weight:800;font-size:clamp(26px,3.6vw,38px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 14px}
+.sub{color:var(--t2);font-size:19px;max-width:560px}
+section{padding:84px 0}section.wrap{padding:84px 22px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:70px 22px 60px}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.links a:not(.yt){display:none}}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:28px;color:var(--t3);font-size:14px;font-weight:600}
+.trust span:before{content:"✓ ";color:var(--g)}
+.screen{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 30px 80px -30px rgba(20,150,190,.35)}
+.screen-top{display:flex;gap:6px;margin-bottom:12px}.screen-top i{width:10px;height:10px;border-radius:50%;background:#2a2d33}
+.screen-label{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.12em;color:var(--t3);font-weight:700;margin-bottom:8px}
+#ladder{width:100%;height:330px;display:block}
+.screen-cap{font-size:13px;color:var(--t2);margin-top:10px}.screen-cap b{color:var(--w)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+@media(max-width:860px){.grid3{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;transition:.2s}
+.card:hover{border-color:#34404a}
+.ico{width:46px;height:46px;border-radius:12px;background:rgba(20,150,190,.12);display:grid;place-items:center;margin-bottom:14px}
+.card h3{margin:0 0 6px;font-size:19px;font-weight:700}.card p{margin:0;color:var(--t2);font-size:15.5px}
+.center{text-align:center}.center .sub{margin:0 auto}
+.path{position:relative;margin-top:40px;display:grid;gap:18px}
+.step{display:grid;grid-template-columns:70px 1fr;gap:18px;align-items:start}
+.dot{width:56px;height:56px;border-radius:50%;background:var(--panel2);border:2px solid var(--acc);display:grid;place-items:center;font-weight:800;color:var(--acc);font-size:20px;position:relative;z-index:1}
+.path:before{content:"";position:absolute;left:27px;top:20px;bottom:20px;width:2px;background:linear-gradient(var(--acc),#26292f)}
+.step .card{padding:20px 22px}
+.step .card small{color:var(--acc);font-weight:700;font-size:12px;letter-spacing:.14em}
+.phases{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.phases a{text-decoration:none;font-size:13.5px;font-weight:600;color:var(--t2);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 11px;transition:.15s}
+.phases a:hover{color:var(--w);border-color:var(--acc)}
+.phases a b{color:var(--acc);margin-right:4px}
+.method{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:34px;counter-reset:m}
+@media(max-width:860px){.method{grid-template-columns:1fr 1fr}}
+.m{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;counter-increment:m}
+.m:before{content:counter(m);display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--acc);font-weight:800;font-size:14px;margin-bottom:10px}
+.m b{display:block;font-size:16px}.m span{color:var(--t3);font-size:14px;line-height:1.45;display:block;margin-top:4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.two ul{list-style:none;padding:0;margin:10px 0 0}.two li{padding:7px 0;color:var(--t2);display:flex;gap:10px}
+.yes li:before{content:"✓";color:var(--g);font-weight:800}.no li:before{content:"✕";color:var(--r);font-weight:800}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:10px 0}
+details[open]{border-color:#34404a}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}summary:after{content:"+";color:var(--acc);font-size:22px;line-height:1}
+details[open] summary:after{content:"−"}
+details p{color:var(--t2);margin:10px 0 0}
+.final{background:linear-gradient(135deg,rgba(20,150,190,.18),rgba(20,150,190,.03));border:1px solid rgba(20,150,190,.35);border-radius:22px;padding:50px 30px;text-align:center}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--t3);font-size:13.5px}
+footer a{color:var(--t2)}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s,transform .7s}.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<script src="assets/site.js" data-part="nav"></script>
+
+<header class="wrap hero">
+  <div>
+    <span class="kicker">Curso gratuito · 10 fases</span>
+    <h1>Aprende a leer el mercado <em>por dentro</em></h1>
+    <p class="sub">De no saber nada de finanzas a usar el DOM, el footprint y el delta en los futuros del Nasdaq y del S&amp;P 500. Paso a paso, con animaciones que puedes tocar.</p>
+    <div class="cta">
+      <a class="btn main" href="curso.html#fase-0">Empezar desde cero →</a>
+      <a class="btn" href="https://www.youtube.com/@opb_labs" target="_blank" rel="noopener">▶ Ver los vídeos</a>
+    </div>
+    <div class="trust"><span>Sin conocimientos previos</span><span>Sin registrarte</span><span>A tu ritmo</span></div>
+  </div>
+  <div class="screen" aria-hidden="true">
+    <div class="screen-top"><i></i><i></i><i></i></div>
+    <div class="screen-label"><span class="gr" style="color:#4CD964">COMPRAN</span><span>PRECIO</span><span style="color:#FF5252">VENDEN</span></div>
+    <canvas id="ladder"></canvas>
+    <div class="screen-cap">Esto es un <b>libro de órdenes</b>. Al final del curso sabrás leerlo en directo.</div>
+  </div>
+</header>
+
+<section class="wrap reveal">
+  <span class="kicker">Qué vas a conseguir</span>
+  <h2>Entender por qué se mueve el precio,<br>no solo ver que se mueve</h2>
+  <div class="grid3">
+    <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1496BE" stroke-width="2" stroke-linecap="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div><h3>Bases sólidas</h3><p>Qué es un futuro, cuánto vale cada movimiento y cómo se lee un gráfico. Explicado con analogías del día a día.</p></div>
+    <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1496BE" stroke-width="2" stroke-linecap="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Proteger tu dinero</h3><p>Gestión del riesgo antes que nada: cuánto arriesgar, dónde poner el stop y cuándo dejar de operar.</p></div>
+    <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1496BE" stroke-width="2" stroke-linecap="round"><path d="M4 6h7M4 10h10M4 14h5M4 18h8"/><path d="M15 6h5M17 10h3M14 14h6M16 18h4"/></svg></div><h3>Leer el orderflow</h3><p>DOM, cinta, perfil de volumen, footprint y CVD: ver quién empuja el precio en cada momento.</p></div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="camino">
+  <span class="kicker">El camino</span>
+  <h2>4 bloques, 10 fases</h2>
+  <p class="sub">Cada fase termina con un checklist. No pases a la siguiente hasta completarlo.</p>
+  <div class="path">
+    <div class="step"><div class="dot">A</div><div class="card"><small>3 SEMANAS</small><h3>Entender el mercado</h3><p>Qué es el trading, por qué se mueve el precio y qué son los futuros NQ y ES.</p>
+      <div class="phases"><a href="curso.html#fase-0"><b>0</b>Qué es el trading</a><a href="curso.html#fase-1"><b>1</b>La subasta</a><a href="curso.html#fase-2"><b>2</b>Futuros NQ y ES</a></div></div></div>
+    <div class="step"><div class="dot">B</div><div class="card"><small>3 SEMANAS</small><h3>Leer y protegerse</h3><p>Gráficos, gestión del riesgo y tu plataforma en modo simulación.</p>
+      <div class="phases"><a href="curso.html#fase-3"><b>3</b>Leer un gráfico</a><a href="curso.html#fase-4"><b>4</b>Riesgo y psicología</a><a href="curso.html#fase-5"><b>5</b>Herramientas</a></div></div></div>
+    <div class="step"><div class="dot">C</div><div class="card"><small>7 SEMANAS</small><h3>Volumen y orderflow</h3><p>El corazón del curso: ver dentro de cada vela.</p>
+      <div class="phases"><a href="curso.html#fase-6"><b>6</b>Perfil de volumen</a><a href="curso.html#fase-7"><b>7</b>DOM y cinta</a><a href="curso.html#fase-8"><b>8</b>Footprint y CVD</a></div></div></div>
+    <div class="step"><div class="dot">D</div><div class="card"><small>3 MESES O MÁS</small><h3>Practicar con método</h3><p>Un plan escrito, simulador y paso a real con el tamaño más pequeño.</p>
+      <div class="phases"><a href="curso.html#fase-9"><b>9</b>Plan y práctica</a></div></div></div>
+  </div>
+</section>
+
+<section class="wrap reveal center">
+  <span class="kicker">Cómo se aprende</span>
+  <h2>Cada lección sigue la misma receta</h2>
+  <div class="method" style="text-align:left">
+    <div class="m"><b>Una idea</b><span>Un solo concepto por lección.</span></div>
+    <div class="m"><b>Una analogía</b><span>El mercadillo, la subasta, la cola…</span></div>
+    <div class="m"><b>Una animación</b><span>Algo que se mueve y puedes tocar.</span></div>
+    <div class="m"><b>Un ejemplo real</b><span>Un día concreto del ES o NQ.</span></div>
+    <div class="m"><b>Un mini test</b><span>Si fallas, repites. Sin prisa.</span></div>
+  </div>
+</section>
+
+<section class="wrap reveal">
+  <span class="kicker">¿Es para ti?</span>
+  <h2>Sé honesto contigo mismo</h2>
+  <div class="two">
+    <div class="card yes"><h3>Es para ti si…</h3><ul><li>Partes de cero y quieres entenderlo bien.</li><li>Te interesa el trading intradía de futuros.</li><li>Estás dispuesto a practicar meses en simulado.</li><li>Prefieres entender antes que copiar señales.</li></ul></div>
+    <div class="card no"><h3>No es para ti si…</h3><ul><li>Buscas hacerte rico rápido.</li><li>Quieres operar con dinero real la semana que viene.</li><li>Buscas que alguien te diga cuándo comprar.</li><li>No puedes permitirte perder lo que inviertes.</li></ul></div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="preguntas" style="max-width:820px">
+  <span class="kicker">Preguntas frecuentes</span>
+  <h2>Lo que todo el mundo pregunta</h2>
+  <details><summary>¿De verdad es gratis?</summary><p>Sí. Todo el contenido de esta web es gratuito y no hace falta registrarse. Tu progreso se guarda en tu propio navegador.</p></details>
+  <details><summary>¿Necesito dinero para empezar?</summary><p>No. Las primeras fases son teoría y práctica en cuenta de simulación. No se recomienda operar con dinero real hasta la fase 9, y siempre empezando con micros (MES o MNQ).</p></details>
+  <details><summary>¿Cuánto tiempo me llevará?</summary><p>Unas 13 semanas de aprendizaje con 5–7 horas a la semana, más varios meses de práctica en simulado. Lo importante es completar cada checklist, no la fecha.</p></details>
+  <details><summary>¿Qué plataforma necesito?</summary><p>Cualquiera que muestre DOM y footprint: NinjaTrader 8, Sierra Chart, ATAS o Quantower, entre otras. En la fase 5 se explica cómo montarlo en simulación.</p></details>
+  <details><summary>¿Por qué NQ y ES?</summary><p>Son los futuros más negociados sobre índices de EE. UU., con mucha liquidez y versiones micro para empezar con poco riesgo.</p></details>
+</section>
+
+<section class="wrap reveal">
+  <div class="final">
+    <h2>Empieza por la fase 0</h2>
+    <p class="sub" style="margin:0 auto 26px">Diez minutos de lectura. Sin gráficos todavía. Solo entender de qué va esto.</p>
+    <a class="btn main" href="curso.html#fase-0">Empezar ahora →</a>
+  </div>
+</section>
+
+<script src="assets/site.js" data-part="footer"></script>
+
+<script>
+/* libro de órdenes animado de la portada */
+(function(){
+  const cv=document.getElementById('ladder');const rows=11;let price=21000,bids=[],asks=[],flash=-1,ft=0,dir=0;
+  for(let i=0;i<rows;i++){bids.push(10+Math.random()*40);asks.push(10+Math.random()*40);}
+  function draw(){const dpr=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(cv.width!==w*dpr){cv.width=w*dpr;cv.height=h*dpr;}
+    const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    const rh=h/rows,mid=Math.floor(rows/2),pw=Math.min(120,w*.3),side=(w-pw)/2-6,mx=60;
+    for(let i=0;i<rows;i++){const y=i*rh,p=price+(mid-i)*0.25;
+      c.fillStyle=i===mid?'#1496BE':'#15171a';c.fillRect(side+3,y+2,pw,rh-4);
+      c.fillStyle=i===mid?'#fff':'#BEC2C8';c.font=(i===mid?'600 ':'500 ')+'13px JetBrains Mono';c.textAlign='center';
+      c.fillText(p.toLocaleString('es-ES',{minimumFractionDigits:2}),side+3+pw/2,y+rh/2+4);
+      if(i>mid){const bw=side*Math.min(1,bids[i]/mx);c.fillStyle='rgba(76,217,100,'+(i===flash&&dir<0?.75:.3)+')';c.fillRect(side-bw,y+3,bw,rh-6);c.fillStyle='#4CD964';c.textAlign='right';c.fillText(Math.round(bids[i]),side-8,y+rh/2+4);}
+      if(i<mid){const aw=side*Math.min(1,asks[i]/mx);c.fillStyle='rgba(255,82,82,'+(i===flash&&dir>0?.75:.3)+')';c.fillRect(w-side,y+3,aw,rh-6);c.fillStyle='#FF5252';c.textAlign='left';c.fillText(Math.round(asks[i]),w-side+8,y+rh/2+4);}
+    }c.textAlign='left';}
+  function step(){for(let i=0;i<rows;i++){bids[i]=Math.max(3,bids[i]+(Math.random()-.5)*6);asks[i]=Math.max(3,asks[i]+(Math.random()-.5)*6);}
+    const mid=Math.floor(rows/2);ft++;
+    if(ft%6===0){dir=Math.random()<.5?1:-1;if(dir>0){asks[mid-1]-=18;flash=mid-1;if(asks[mid-1]<4){price+=.25;asks.shift();asks.push(10+Math.random()*40);bids.shift();bids.push(10+Math.random()*40);}}
+      else{bids[mid+1]-=18;flash=mid+1;if(bids[mid+1]<4){price-=.25;asks.unshift(10+Math.random()*40);asks.pop();bids.unshift(10+Math.random()*40);bids.pop();}}}
+    else flash=-1;draw();}
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;draw();if(!reduce)setInterval(step,260);addEventListener('resize',draw);
+})();
+/* aparición suave de secciones */
+(function(){const els=document.querySelectorAll('.reveal');if(!('IntersectionObserver' in window)){els.forEach(e=>e.classList.add('in'));return;}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});els.forEach(e=>io.observe(e));})();
+</script>
+</body>
+</html>

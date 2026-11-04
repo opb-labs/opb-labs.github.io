@@ -1,4 +1,4 @@
-# De cero a Orderflow · OPB Labs
+# OPB Labs · opb-labs.com
 
 Curso gratuito para aprender trading de futuros del Nasdaq (NQ) y del S&P 500 (ES), desde cero hasta orderflow.
 
@@ -6,8 +6,13 @@ Curso gratuito para aprender trading de futuros del Nasdaq (NQ) y del S&P 500 (E
 
 | Archivo | Qué es |
 |---|---|
-| `index.html` | Portada del curso |
+| `index.html` | Portada de OPB Labs: curso, herramientas, canal y contacto |
+| `aprende.html` | Presentación del curso gratuito "De cero a Orderflow" |
 | `curso.html` | Las 10 fases, con animaciones y checklists |
+| `herramientas.html` | Productos OPB Labs (próximamente) |
+| `documentacion.html` | Requisitos, instalación, manuales y preguntas frecuentes |
+| `assets/site.js` | Menú superior y pie de TODAS las páginas: para cambiarlos, edita solo este archivo |
+| `aviso-legal.html`, `privacidad.html` | Textos legales |
 | `assets/logo.svg` | Logo de OPB Labs (también se usa como icono de la pestaña) |
 | `.nojekyll` | Le dice a GitHub Pages que publique los archivos tal cual |
 
