@@ -89,7 +89,12 @@
   };
   var L = T[LANG], MENU = L.MENU, CTA = L.CTA, PIE = L.PIE;
 
-  var LOGO = '<img src="' + ROOT + 'assets/logo.svg" alt="" width="30" height="30">';
+  /* Logo horizontal, como en YouTube: marca | OPB / TECH & TRADING LABS con línea azul */
+  function brand(cls) {
+    return '<a class="opb-brand ' + (cls || '') + '" href="' + url(LANG === 'en' ? 'en/index.html' : 'index.html') + '" aria-label="OPB Tech &amp; Trading Labs">' +
+      '<img src="' + ROOT + 'assets/logo.svg" alt="" width="34" height="34"><i class="opb-sep" aria-hidden="true"></i>' +
+      '<span class="opb-word" aria-hidden="true"><b>OPB</b><small>TECH &amp; TRADING <em>LABS</em></small></span></a>';
+  }
   /* página actual, escrita desde la raíz: "herramientas.html", "en/tools.html"… (sirve también sin .html) */
   var parts = location.pathname.split('/');
   var file = parts.pop() || 'index'; if (!/\.html$/.test(file)) file += '.html';
@@ -114,7 +119,14 @@
     '.opb-nav{position:sticky;top:0;z-index:100;background:rgba(11,11,12,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid #26292f;font-family:Montserrat,system-ui,sans-serif}' +
     '.opb-w{max-width:1120px;margin:0 auto;padding:0 22px}' +
     '.opb-bar{display:flex;align-items:center;justify-content:space-between;height:62px;gap:20px}' +
-    '.opb-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#F2F2F2;font-weight:800;letter-spacing:.06em;font-size:16px;white-space:nowrap}.opb-brand b{color:#1496BE}' +
+    '.opb-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#F2F2F2;white-space:nowrap;line-height:1}' +
+    '.opb-brand img{display:block;flex:none}' +
+    '.opb-sep{display:block;width:1px;height:30px;background:#E6E6E6;opacity:.55;flex:none}' +
+    '.opb-word{display:flex;flex-direction:column;align-items:flex-start;gap:3px}' +
+    '.opb-word b{font-weight:800;font-size:21px;letter-spacing:.03em;color:#F2F2F2}' +
+    '.opb-word small{font-weight:600;font-size:8.4px;letter-spacing:.2em;color:#F2F2F2;padding-bottom:3px;border-bottom:1.5px solid #1496BE}' +
+    '.opb-word em{font-style:normal;color:#1496BE}' +
+    '.opb-big img{width:44px;height:44px}.opb-big .opb-sep{height:40px}.opb-big .opb-word b{font-size:28px}.opb-big .opb-word small{font-size:9.8px;padding-bottom:4px;border-bottom-width:2px}' +
     '.opb-panel{display:flex;align-items:center}.opb-menu{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0}' +
     '.opb-menu>li{position:relative}' +
     '.opb-menu>li>a{display:flex;align-items:center;gap:6px;color:#BEC2C8;text-decoration:none;font-weight:600;font-size:14.5px;padding:10px 12px;border-radius:8px}' +
@@ -163,7 +175,7 @@
 
   function nav(progress) {
     var h = '<div class="opb-top"></div><nav class="opb-nav" aria-label="Principal"><div class="opb-w opb-bar">' +
-      '<a class="opb-brand" href="' + url(LANG === 'en' ? 'en/index.html' : 'index.html') + '">' + LOGO + 'OPB <b>LABS</b></a>' +
+      brand() +
       '<button class="opb-burger" type="button" aria-label="' + L.open + '" aria-expanded="false"><i></i></button>' +
       '<div class="opb-panel"><ul class="opb-menu">';
     MENU.forEach(function (m) {
@@ -183,7 +195,7 @@
 
   function footer(note) {
     var h = '<footer class="opb-foot"><div class="opb-w"><div class="opb-fgrid">' +
-      '<div class="opb-about"><a class="opb-brand" href="' + url(LANG === 'en' ? 'en/index.html' : 'index.html') + '">' + LOGO + 'OPB <b>LABS</b></a>' +
+      '<div class="opb-about">' + brand('opb-big') +
       '<p>' + L.about + '</p>' +
       '<p><a href="mailto:' + MAIL + '">' + MAIL + '</a></p></div>';
     PIE.forEach(function (c) {
